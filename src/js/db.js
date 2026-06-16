@@ -466,29 +466,48 @@ const SEED_ORDERS = [
   }
 ];
 
-// Initialize DB in localStorage (Self-healing per table)
 function initDB() {
-  const users = localStorage.getItem("damaraskin_users");
-  if (!users || JSON.parse(users).length === 0) {
+  localStorage.removeItem("damaraskin_db_initialized");
+  try {
+    const users = localStorage.getItem("damaraskin_users");
+    if (!users || JSON.parse(users).length === 0) {
+      localStorage.setItem("damaraskin_users", JSON.stringify(SEED_USERS));
+    }
+  } catch (e) {
     localStorage.setItem("damaraskin_users", JSON.stringify(SEED_USERS));
   }
-  const products = localStorage.getItem("damaraskin_products");
-  if (!products || JSON.parse(products).length === 0) {
+  try {
+    const products = localStorage.getItem("damaraskin_products");
+    if (!products || JSON.parse(products).length === 0) {
+      localStorage.setItem("damaraskin_products", JSON.stringify(SEED_PRODUCTS));
+    }
+  } catch (e) {
     localStorage.setItem("damaraskin_products", JSON.stringify(SEED_PRODUCTS));
   }
-  const reviews = localStorage.getItem("damaraskin_reviews");
-  if (!reviews || JSON.parse(reviews).length === 0) {
+  try {
+    const reviews = localStorage.getItem("damaraskin_reviews");
+    if (!reviews || JSON.parse(reviews).length === 0) {
+      localStorage.setItem("damaraskin_reviews", JSON.stringify(SEED_REVIEWS));
+    }
+  } catch (e) {
     localStorage.setItem("damaraskin_reviews", JSON.stringify(SEED_REVIEWS));
   }
-  const articles = localStorage.getItem("damaraskin_articles");
-  if (!articles || JSON.parse(articles).length === 0) {
+  try {
+    const articles = localStorage.getItem("damaraskin_articles");
+    if (!articles || JSON.parse(articles).length === 0) {
+      localStorage.setItem("damaraskin_articles", JSON.stringify(SEED_ARTICLES));
+    }
+  } catch (e) {
     localStorage.setItem("damaraskin_articles", JSON.stringify(SEED_ARTICLES));
   }
-  const orders = localStorage.getItem("damaraskin_orders");
-  if (!orders || JSON.parse(orders).length === 0) {
+  try {
+    const orders = localStorage.getItem("damaraskin_orders");
+    if (!orders || JSON.parse(orders).length === 0) {
+      localStorage.setItem("damaraskin_orders", JSON.stringify(SEED_ORDERS));
+    }
+  } catch (e) {
     localStorage.setItem("damaraskin_orders", JSON.stringify(SEED_ORDERS));
   }
-  localStorage.setItem("damaraskin_db_initialized", "true");
 }
 
 initDB();
@@ -497,7 +516,12 @@ initDB();
 export const db = {
   // Users / Auth
   getUsers() {
-    return JSON.parse(localStorage.getItem("damaraskin_users") || "[]");
+    try {
+      const data = JSON.parse(localStorage.getItem("damaraskin_users") || "[]");
+      return (data && data.length > 0) ? data : SEED_USERS;
+    } catch (e) {
+      return SEED_USERS;
+    }
   },
   saveUsers(users) {
     localStorage.setItem("damaraskin_users", JSON.stringify(users));
@@ -623,7 +647,12 @@ export const db = {
 
   // Products
   getProducts() {
-    return JSON.parse(localStorage.getItem("damaraskin_products") || "[]");
+    try {
+      const data = JSON.parse(localStorage.getItem("damaraskin_products") || "[]");
+      return (data && data.length > 0) ? data : SEED_PRODUCTS;
+    } catch (e) {
+      return SEED_PRODUCTS;
+    }
   },
   saveProducts(products) {
     localStorage.setItem("damaraskin_products", JSON.stringify(products));
@@ -667,7 +696,13 @@ export const db = {
 
   // Reviews
   getReviews(productId = null) {
-    const reviews = JSON.parse(localStorage.getItem("damaraskin_reviews") || "[]");
+    let reviews = [];
+    try {
+      reviews = JSON.parse(localStorage.getItem("damaraskin_reviews") || "[]");
+    } catch (e) {}
+    if (!reviews || reviews.length === 0) {
+      reviews = SEED_REVIEWS;
+    }
     if (productId) {
       return reviews.filter(r => String(r.product_id) === String(productId));
     }
@@ -779,14 +814,19 @@ export const db = {
 
   // Orders
   getOrders() {
-    const orders = JSON.parse(localStorage.getItem("damaraskin_orders") || "[]");
+    const orders = this.getAllOrders();
     const user = this.getCurrentUser();
     if (!user) return [];
     if (user.role === "admin") return orders;
     return orders.filter(o => String(o.user_id) === String(user.id));
   },
   getAllOrders() {
-    return JSON.parse(localStorage.getItem("damaraskin_orders") || "[]");
+    try {
+      const data = JSON.parse(localStorage.getItem("damaraskin_orders") || "[]");
+      return (data && data.length > 0) ? data : SEED_ORDERS;
+    } catch (e) {
+      return SEED_ORDERS;
+    }
   },
   getOrderById(id) {
     return this.getAllOrders().find(o => String(o.id) === String(id));
@@ -892,7 +932,13 @@ export const db = {
     //   slug: post.slug
     // }));
     // Saat ini menggunakan static data dari localStorage sebagai fallback.
-    const raw = JSON.parse(localStorage.getItem("damaraskin_articles") || "[]");
+    let raw = [];
+    try {
+      raw = JSON.parse(localStorage.getItem("damaraskin_articles") || "[]");
+    } catch (e) {}
+    if (!raw || raw.length === 0) {
+      raw = SEED_ARTICLES;
+    }
     return raw.map(art => {
       const normalized = { ...art };
       if (normalized.title && typeof normalized.title === "string") {
