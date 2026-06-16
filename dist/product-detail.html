@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detail Produk - DamaraSkin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/module.esm.js"></script>
+  <script type="module" crossorigin src="/assets/compiled-KLbNheu3.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/compiled-DXAZJh9h.css">
+</head>
+<body class="font-poppins antialiased bg-[#FAF7F6] text-dark-text min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Product Details Main Area -->
+    <main class="flex-grow py-10 bg-white" x-data="productDetailPage()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumbs -->
+            <nav class="flex mb-8 text-xs font-medium text-gray-400" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-2">
+                    <li class="inline-flex items-center">
+                        <a href="/" class="inline-flex items-center hover:text-primary transition">Home</a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-3 h-3 text-gray-300 mx-1" aria-hidden="true" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
+                            <a href="/products.html" class="ml-1 hover:text-primary transition">Katalog Produk</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="w-3 h-3 text-gray-300 mx-1" aria-hidden="true" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
+                            <span class="ml-1 text-gray-500 font-semibold line-clamp-1" x-text="product ? product.name : 'Detail Produk'"></span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Alerts -->
+            <div x-show="alertSuccess" x-transition class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-2xl mb-8 flex justify-between items-center" x-cloak>
+                <span class="text-sm font-medium" x-text="alertSuccess"></span>
+                <button @click="alertSuccess = ''" class="text-green-500 hover:text-green-700">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+            </div>
+            <div x-show="alertError" x-transition class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl mb-8 flex justify-between items-center" x-cloak>
+                <span class="text-sm font-medium" x-text="alertError"></span>
+                <button @click="alertError = ''" class="text-red-500 hover:text-red-700">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+            </div>
+
+            <!-- Product View Container -->
+            <template x-if="product">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                    
+                    <!-- Left: Image (5 cols) -->
+                    <div class="lg:col-span-5">
+                        <div class="relative w-full pt-[100%] rounded-3xl overflow-hidden bg-gray-50 border border-primary/5 shadow-lg shadow-primary/5 group">
+                            <img :src="product.images[0]" :alt="product.name" class="absolute inset-0 w-full h-full object-cover group-hover:scale-102 transition duration-500">
+                        </div>
+                    </div>
+
+                    <!-- Right: Details (7 cols) -->
+                    <div class="lg:col-span-7 flex flex-col h-full justify-between">
+                        <div>
+                            <!-- Category Tag & Stock -->
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                                <span class="bg-primary/10 text-primary text-xs font-bold px-3 py-1.5 rounded-full border border-primary/10" x-text="product.category.charAt(0).toUpperCase() + product.category.slice(1)"></span>
+                                <template x-if="product.stock > 0">
+                                    <span class="bg-green-50 text-green-700 text-xs font-semibold px-3 py-1 rounded-full border border-green-200" x-text="'Stok: ' + product.stock + ' (Tersedia)'"></span>
+                                </template>
+                                <template x-if="product.stock <= 0">
+                                    <span class="bg-red-50 text-red-700 text-xs font-semibold px-3 py-1 rounded-full border border-red-200">Stok Habis</span>
+                                </template>
+                            </div>
+
+                            <!-- Product Name -->
+                            <h1 class="text-3xl font-extrabold text-gray-900 mt-5 leading-tight tracking-tight" x-text="product.name"></h1>
+
+                            <!-- Ratings & Reviews Count -->
+                            <div class="flex items-center space-x-2.5 mt-3 mb-6">
+                                <div class="flex" x-html="renderStars(product.rating)"></div>
+                                <span class="text-sm font-bold text-gray-800" x-text="product.rating"></span>
+                                <span class="text-sm text-gray-400 font-medium" x-text="'| ' + reviews.length + ' Ulasan'"></span>
+                            </div>
+
+                            <!-- Price Tag -->
+                            <div class="text-3xl font-extrabold text-primary mb-6 tracking-tight" x-text="formatPrice(product.price)"></div>
+
+                            <!-- Suitability Fields -->
+                            <div class="space-y-3.5 border-y border-gray-100 py-5 mb-6">
+                                <div class="text-sm">
+                                    <span class="text-gray-400 font-bold inline-block w-28 uppercase tracking-wider text-xs">Tipe Kulit:</span>
+                                    <span class="bg-gray-100 text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-lg border border-gray-200/50" x-text="product.skin_type === 'all' ? 'Semua Jenis Kulit' : product.skin_type.charAt(0).toUpperCase() + product.skin_type.slice(1)"></span>
+                                </div>
+                                <template x-if="product.concern && product.concern.length > 0">
+                                    <div class="text-sm flex items-start">
+                                        <span class="text-gray-400 font-bold inline-block w-28 uppercase tracking-wider text-xs flex-shrink-0 mt-1">Mengatasi:</span>
+                                        <div class="flex flex-wrap gap-1.5">
+                                            <template x-for="con in product.concern" :key="con">
+                                                <span class="bg-primary/5 text-primary text-xs font-semibold px-3 py-1.5 rounded-lg border border-primary/5" x-text="con.charAt(0).toUpperCase() + con.slice(1).replace('_', ' ')"></span>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Description Box -->
+                            <div class="mb-8">
+                                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2.5">Deskripsi Produk</h3>
+                                <p class="text-sm text-gray-500 leading-relaxed font-medium" x-text="product.description"></p>
+                            </div>
+                        </div>
+
+                        <!-- Cart Add Panel -->
+                        <div class="pt-4 border-t border-gray-100">
+                            <template x-if="product.stock > 0">
+                                <div class="flex flex-col sm:flex-row items-stretch gap-4">
+                                    <!-- Quantity controls -->
+                                    <div class="flex items-center border border-gray-200 rounded-2xl overflow-hidden bg-gray-50 self-start">
+                                        <button type="button" @click="if (qty > 1) qty--" class="px-4 py-3 text-gray-500 hover:bg-gray-100 transition font-bold">-</button>
+                                        <span class="w-12 text-center bg-transparent border-0 focus:ring-0 p-0 text-sm font-bold text-gray-700" x-text="qty"></span>
+                                        <button type="button" @click="if (qty < product.stock) qty++" class="px-4 py-3 text-gray-500 hover:bg-gray-100 transition font-bold">+</button>
+                                    </div>
+
+                                    <button @click="addToCart()" class="flex-grow inline-flex justify-center items-center px-8 py-3.5 border border-transparent text-sm font-bold rounded-2xl text-white bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition duration-300 shadow-lg shadow-primary/20">
+                                        <svg class="h-4.5 w-4.5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                                        Tambah ke Keranjang
+                                    </button>
+                                </div>
+                            </template>
+                            <template x-if="product.stock <= 0">
+                                <button disabled class="w-full text-center py-4 bg-gray-150 text-gray-400 font-bold rounded-2xl cursor-not-allowed">
+                                    Stok Produk Habis
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+
+                </div>
+            </template>
+        </div>
+
+        <!-- Review Section (Varying Background Band) -->
+        <div class="py-16 bg-[#FAF7F6] border-y border-primary/5 mt-16" id="review-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight mb-8 text-center md:text-left">Ulasan Pengguna</h2>
+
+                    <!-- Add Review Form (qualified customers only) -->
+                    <template x-if="canReview">
+                        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-primary/5 shadow-sm mb-8">
+                            <h3 class="text-sm font-bold text-primary mb-4 uppercase tracking-wider">Tulis Ulasan Produk</h3>
+                            <form @submit.prevent="submitReview()" class="space-y-4">
+                                <!-- Star rate inputs -->
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Rating</label>
+                                    <div class="flex items-center space-x-1">
+                                        <template x-for="i in 5">
+                                            <button type="button" @click="reviewRating = i" class="text-yellow-400 focus:outline-none hover:scale-110 transform transition">
+                                                <svg class="h-6 w-6" :class="i <= reviewRating ? 'fill-current' : 'text-gray-300'" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                </svg>
+                                            </button>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Review text -->
+                                <div>
+                                    <label for="comment" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5">Komentar Ulasan</label>
+                                    <textarea x-model="reviewComment" id="comment" rows="3" required class="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Bagikan tanggapan jujur Anda setelah menggunakan produk ini..."></textarea>
+                                </div>
+
+                                <button type="submit" class="bg-primary hover:bg-accent text-white text-xs font-bold py-2.5 px-5 rounded-full transition shadow-md shadow-primary/10">
+                                    Kirim Ulasan
+                                </button>
+                            </form>
+                        </div>
+                    </template>
+
+                    <!-- Reviews Log -->
+                    <template x-if="reviews.length === 0">
+                        <div class="text-center py-10 bg-white rounded-3xl border border-primary/5">
+                            <p class="text-sm text-gray-400 italic">Belum ada ulasan pengguna untuk produk ini.</p>
+                        </div>
+                    </template>
+
+                    <div class="space-y-6">
+                        <template x-for="rev in reviews" :key="rev.id">
+                            <div class="bg-white p-6 rounded-3xl border border-primary/5 shadow-[0_5px_15px_-5px_rgba(0,0,0,0.01)] last:mb-0">
+                                <div class="flex items-center justify-between mb-2 border-b border-gray-50 pb-2">
+                                    <span class="text-sm font-bold text-gray-800" x-text="rev.user_name"></span>
+                                    <span class="text-xs text-gray-400 font-medium" x-text="new Date(rev.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'})"></span>
+                                </div>
+                                <div class="flex text-yellow-400 mb-3" x-html="renderStars(rev.rating)"></div>
+                                <p class="text-sm text-gray-600 leading-relaxed font-medium" x-text="rev.comment"></p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products Section -->
+        <template x-if="relatedProducts.length > 0">
+            <div class="py-16 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight mb-8 text-center md:text-left">Produk Terkait</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <template x-for="related in relatedProducts" :key="related.id">
+                            <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(245,128,157,0.12)] hover:-translate-y-1.5 transform transition-all duration-500 flex flex-col h-full group">
+                                <div class="relative pt-[100%] overflow-hidden bg-gray-100">
+                                    <img :src="related.images[0]" :alt="related.name" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-primary text-xs font-semibold px-3 py-1 rounded-full border border-primary/10" x-text="related.category.charAt(0).toUpperCase() + related.category.slice(1)"></span>
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow">
+                                    <div class="flex items-center space-x-1 mb-2">
+                                        <div class="flex" x-html="renderStars(related.rating)"></div>
+                                        <span class="text-xs text-gray-400 font-medium" x-text="'(' + related.rating + ')'"></span>
+                                    </div>
+                                    <h3 class="text-gray-800 font-semibold text-base mb-1 line-clamp-1 group-hover:text-primary transition-colors duration-200" x-text="related.name"></h3>
+                                    <span class="text-[11px] text-gray-400 font-medium mb-3">
+                                        Cocok untuk: <span class="text-primary" x-text="related.skin_type === 'all' ? 'Semua Jenis Kulit' : related.skin_type.charAt(0).toUpperCase() + related.skin_type.slice(1)"></span>
+                                    </span>
+                                    <p class="text-xs text-gray-500 line-clamp-2 mb-4 leading-relaxed flex-grow" x-text="related.description"></p>
+                                    <div class="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between">
+                                        <span class="text-primary font-bold text-base" x-text="formatPrice(related.price)"></span>
+                                        <a :href="'/product-detail.html?slug=' + related.slug" class="inline-flex items-center justify-center px-4 py-1.5 text-xs font-semibold text-white bg-primary hover:bg-accent rounded-full transition-colors duration-300 shadow-md shadow-primary/10">Lihat Detail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script>
+        function productDetailPage() {
+            return {
+                product: null,
+                reviews: [],
+                relatedProducts: [],
+                qty: 1,
+                alertSuccess: '',
+                alertError: '',
+                canReview: false,
+                reviewRating: 5,
+                reviewComment: '',
+                init() {
+                    const params = new URLSearchParams(window.location.search);
+                    const slug = params.get('slug');
+                    if (!slug) {
+                        window.location.href = '/products.html';
+                        return;
+                    }
+                    this.product = window.db.getProductBySlug(slug);
+                    if (!this.product) {
+                        window.location.href = '/products.html';
+                        return;
+                    }
+                    this.reviews = window.db.getReviews(this.product.id);
+                    this.checkReviewEligibility();
+
+                    // Load related products
+                    this.relatedProducts = window.db.getProducts()
+                        .filter(p => p.category === this.product.category && p.id !== this.product.id)
+                        .slice(0, 4);
+                },
+                checkReviewEligibility() {
+                    const currentUser = window.db.getCurrentUser();
+                    if (!currentUser || currentUser.role !== 'user') {
+                        this.canReview = false;
+                        return;
+                    }
+                    // Eligible if bought it (order delivered) AND hasn't reviewed yet
+                    const orders = window.db.getOrders();
+                    const hasBought = orders.some(o => o.status === 'delivered' && o.items.some(item => item.product_id === this.product.id));
+                    const hasReviewed = this.reviews.some(r => r.user_name === currentUser.name);
+                    this.canReview = hasBought && !hasReviewed;
+                },
+                addToCart() {
+                    this.alertSuccess = '';
+                    this.alertError = '';
+                    
+                    const currentUser = window.db.getCurrentUser();
+                    if (!currentUser) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    if (currentUser.role !== 'user') {
+                        this.alertError = 'Hanya pelanggan yang dapat berbelanja.';
+                        return;
+                    }
+
+                    const res = window.db.addToCart(this.product.id, this.qty);
+                    if (res.success) {
+                        this.alertSuccess = `Berhasil menambahkan ${this.qty} item ke keranjang belanja.`;
+                        this.qty = 1;
+                        setTimeout(() => this.alertSuccess = '', 5000);
+                    } else {
+                        this.alertError = res.message;
+                    }
+                },
+                submitReview() {
+                    this.alertSuccess = '';
+                    this.alertError = '';
+                    const res = window.db.addReview(this.product.id, this.reviewRating, this.reviewComment);
+                    if (res.success) {
+                        this.alertSuccess = 'Ulasan Anda berhasil dikirim!';
+                        this.reviews = window.db.getReviews(this.product.id);
+                        // Recalculate main product rating in UI
+                        this.product = window.db.getProductById(this.product.id);
+                        this.reviewComment = '';
+                        this.reviewRating = 5;
+                        this.canReview = false;
+                        setTimeout(() => this.alertSuccess = '', 5000);
+                    } else {
+                        this.alertError = res.message;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

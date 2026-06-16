@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tips Skincare - DamaraSkin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script type="module" src="/src/js/app.js"></script>
+    <link rel="stylesheet" href="/src/css/compiled.css">
+    <style>
+        .article-content h1, 
+        .article-content h2, 
+        .article-content h3 {
+            color: #1f2937;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        .article-content h1 { font-size: 1.6rem; }
+        .article-content h2 { font-size: 1.45rem; }
+        .article-content h3 { font-size: 1.25rem; }
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+        .article-content ul {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .article-content li {
+            margin-bottom: 0.75rem;
+        }
+        .article-content strong {
+            color: #111827;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="font-poppins antialiased bg-[#FAF7F6] text-dark-text min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow py-12 bg-white" x-data="articleDetailPage()">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumbs -->
+            <nav class="flex mb-8 text-xs font-medium text-gray-400" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-2">
+                    <li class="inline-flex items-center">
+                        <a href="/" class="inline-flex items-center hover:text-primary transition">Home</a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="w-3 h-3 text-gray-300 mx-1" aria-hidden="true" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
+                            <a href="/articles.html" class="ml-1 hover:text-primary transition">Tips & Artikel</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="w-3 h-3 text-gray-300 mx-1" aria-hidden="true" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
+                            <span class="ml-1 text-gray-500 font-semibold line-clamp-1" x-html="article ? article.title.rendered : 'Detail Artikel'"></span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+            <template x-if="article">
+                <article class="max-w-3xl mx-auto">
+                    <!-- Meta info -->
+                    <div class="flex items-center space-x-2 text-xs text-gray-400 mb-4 uppercase tracking-wider font-bold">
+                        <span class="text-primary">Skincare Tips</span>
+                        <span>&bull;</span>
+                        <span x-text="new Date(article.date).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'})"></span>
+                        <span>&bull;</span>
+                        <span>Oleh: Damara Beauty</span>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-8" x-html="article.title.rendered"></h1>
+
+                    <!-- Thumbnail -->
+                    <div class="relative w-full pt-[50%] rounded-3xl overflow-hidden bg-gray-50 mb-10 border border-primary/5 shadow-md shadow-primary/5">
+                        <img :src="article.jetpack_featured_media_url" :alt="article.title.rendered" class="absolute inset-0 w-full h-full object-cover">
+                    </div>
+
+                    <!-- HTML Content -->
+                    <div class="article-content text-gray-600 leading-relaxed space-y-6 text-base font-medium" x-html="article.content.rendered"></div>
+
+                    <!-- Footer Actions -->
+                    <div class="mt-12 pt-8 border-t border-gray-150 flex justify-between items-center">
+                        <a href="/articles.html" class="inline-flex items-center text-sm font-bold text-primary hover:text-accent transition">
+                            &larr; Kembali ke Tips & Artikel
+                        </a>
+                    </div>
+                </article>
+            </template>
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script>
+        function articleDetailPage() {
+            return {
+                article: null,
+                init() {
+                    const params = new URLSearchParams(window.location.search);
+                    const slug = params.get('slug');
+                    if (!slug) {
+                        window.location.href = '/articles.html';
+                        return;
+                    }
+                    this.article = window.db.getArticleBySlug(slug);
+                    if (!this.article) {
+                        window.location.href = '/articles.html';
+                        return;
+                    }
+                    // Update document title dynamically
+                    document.title = this.article.title.rendered + ' - DamaraSkin';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

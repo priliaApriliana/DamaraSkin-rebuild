@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Katalog Produk Skincare - DamaraSkin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/module.esm.js"></script>
+  <script type="module" crossorigin src="/assets/compiled-KLbNheu3.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/compiled-DXAZJh9h.css">
+</head>
+<body class="font-poppins antialiased bg-[#FAF7F6] text-dark-text min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header Banner -->
+    <div class="bg-gradient-to-r from-[#FFF6F6] via-[#FFF1F3] to-[#FFF9FA] border-b border-primary/5 py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumbs -->
+            <nav class="flex mb-4 text-xs font-medium text-gray-400" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-2">
+                    <li class="inline-flex items-center">
+                        <a href="/" class="inline-flex items-center hover:text-primary transition">Home</a>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="w-3 h-3 text-gray-300 mx-1" aria-hidden="true" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
+                            <span class="ml-1 text-gray-505 font-semibold">Katalog Produk</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-none">
+                Katalog Skincare
+            </h1>
+            <p class="text-sm text-gray-505 mt-2">Temukan kurasi skincare terbaik pilihan kami, diformulasikan untuk kecantikan dan kesehatan kulit alami Anda.</p>
+        </div>
+    </div>
+
+    <!-- Catalog Main Area -->
+    <div class="py-12 bg-white" x-data="productsPage()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-10">
+                
+                <!-- Sidebar Filters (3 cols) -->
+                <div class="lg:col-span-3 mb-10 lg:mb-0">
+                    <div class="bg-[#FAF7F6] p-6 sm:p-8 rounded-3xl border border-primary/5">
+                        <h2 class="text-base font-bold text-gray-800 border-b border-primary/10 pb-3.5 mb-6 flex items-center">
+                            <svg class="h-5 w-5 mr-2 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                            Filter Produk
+                        </h2>
+
+                        <form @submit.prevent="filterProducts()" class="space-y-6">
+                            <!-- Search Box -->
+                            <div>
+                                <label for="search" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Cari Produk</label>
+                                <input type="text" x-model="search" @input="filterProducts()" id="search" class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Ketik nama produk...">
+                            </div>
+
+                            <!-- Category Filter -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Kategori</label>
+                                <select x-model="category" @change="filterProducts()" class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition">
+                                    <template x-for="cat in categories" :key="cat">
+                                        <option :value="cat" x-text="cat === 'all' ? 'Semua Kategori' : cat.charAt(0).toUpperCase() + cat.slice(1)"></option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <!-- Skin Type Filter -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Jenis Kulit</label>
+                                <select x-model="skinType" @change="filterProducts()" class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition">
+                                    <template x-for="st in skinTypes" :key="st">
+                                        <option :value="st" x-text="st === 'all' ? 'Semua Jenis Kulit' : st.charAt(0).toUpperCase() + st.slice(1)"></option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <!-- Concern Filter -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Keluhan Kulit</label>
+                                <div class="space-y-2.5 mt-3">
+                                    <template x-for="con in concerns" :key="con">
+                                        <label class="inline-flex items-center cursor-pointer">
+                                            <input type="radio" name="concern_radio" :value="con" x-model="concern" @change="filterProducts()" class="rounded border-gray-300 text-primary focus:ring-primary">
+                                            <span class="ml-2.5 text-sm text-gray-600 hover:text-primary transition-colors" x-text="con === 'all' ? 'Semua Keluhan' : con.charAt(0).toUpperCase() + con.slice(1).replace('_', ' ')"></span>
+                                        </label>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="pt-5 border-t border-primary/10 flex flex-col space-y-2.5">
+                                <button type="button" @click="resetFilters()" class="w-full bg-white hover:bg-gray-50 border border-gray-200/80 text-gray-600 text-center text-sm font-bold py-3 px-4 rounded-2xl transition duration-300">
+                                    Reset Filter
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Product Grid (9 cols) -->
+                <div class="lg:col-span-9">
+                    <div class="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
+                        <span class="text-sm text-gray-500 font-medium">Menampilkan <strong class="text-gray-800" x-text="products.length"></strong> produk</span>
+                    </div>
+
+                    <template x-if="products.length === 0">
+                        <div class="text-center py-16 bg-[#FFF9FA] rounded-3xl border border-primary/5">
+                            <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h3 class="text-lg font-bold text-gray-800">Produk Tidak Ditemukan</h3>
+                            <p class="text-sm text-gray-500 mt-2">Coba atur ulang kata kunci pencarian atau filter kategori Anda.</p>
+                            <div class="mt-6">
+                                <button @click="resetFilters()" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary hover:bg-accent text-white font-semibold rounded-full text-xs transition duration-300 shadow-md shadow-primary/10">
+                                    Tampilkan Semua Produk
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <template x-for="product in products" :key="product.id">
+                            <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(245,128,157,0.12)] hover:-translate-y-1.5 transform transition-all duration-500 flex flex-col h-full group">
+                                <div class="relative pt-[100%] overflow-hidden bg-gray-100">
+                                    <img :src="product.images[0]" :alt="product.name" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-primary text-xs font-semibold px-3 py-1 rounded-full border border-primary/10" x-text="product.category.charAt(0).toUpperCase() + product.category.slice(1)"></span>
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow">
+                                    <div class="flex items-center space-x-1 mb-2">
+                                        <div class="flex" x-html="renderStars(product.rating)"></div>
+                                        <span class="text-xs text-gray-400 font-medium" x-text="'(' + product.rating + ')'"></span>
+                                    </div>
+                                    <h3 class="text-gray-800 font-semibold text-base mb-1 line-clamp-1 group-hover:text-primary transition-colors duration-200" x-text="product.name"></h3>
+                                    <span class="text-[11px] text-gray-400 font-medium mb-3">
+                                        Cocok untuk: <span class="text-primary" x-text="product.skin_type === 'all' ? 'Semua Jenis Kulit' : product.skin_type.charAt(0).toUpperCase() + product.skin_type.slice(1)"></span>
+                                    </span>
+                                    <p class="text-xs text-gray-500 line-clamp-2 mb-4 leading-relaxed flex-grow" x-text="product.description"></p>
+                                    <div class="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between">
+                                        <span class="text-primary font-bold text-base" x-text="formatPrice(product.price)"></span>
+                                        <a :href="'/product-detail.html?slug=' + product.slug" class="inline-flex items-center justify-center px-4 py-1.5 text-xs font-semibold text-white bg-primary hover:bg-accent rounded-full transition-colors duration-300 shadow-md shadow-primary/10">Lihat Detail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script>
+        function productsPage() {
+            return {
+                allProducts: [],
+                products: [],
+                categories: [],
+                skinTypes: ['all', 'normal', 'oily', 'dry', 'combination', 'sensitive'],
+                concerns: ['all', 'acne', 'brightening', 'anti_aging', 'hydrating', 'pore'],
+                search: '',
+                category: 'all',
+                skinType: 'all',
+                concern: 'all',
+                init() {
+                    this.allProducts = window.db.getProducts();
+                    this.categories = ['all', ...new Set(this.allProducts.map(p => p.category))];
+                    
+                    // Parse query parameters
+                    const params = new URLSearchParams(window.location.search);
+                    if (params.has('category')) this.category = params.get('category');
+                    if (params.has('skin_type')) this.skinType = params.get('skin_type');
+                    if (params.has('concern')) this.concern = params.get('concern');
+                    if (params.has('search')) this.search = params.get('search');
+                    
+                    this.filterProducts();
+                },
+                filterProducts() {
+                    let filtered = this.allProducts;
+                    
+                    if (this.search) {
+                        const q = this.search.toLowerCase();
+                        filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+                    }
+                    if (this.category !== 'all') {
+                        filtered = filtered.filter(p => p.category === this.category);
+                    }
+                    if (this.skinType !== 'all') {
+                        filtered = filtered.filter(p => p.skin_type === 'all' || p.skin_type === this.skinType);
+                    }
+                    if (this.concern !== 'all') {
+                        filtered = filtered.filter(p => p.concern && p.concern.includes(this.concern));
+                    }
+                    
+                    this.products = filtered;
+                },
+                resetFilters() {
+                    this.search = '';
+                    this.category = 'all';
+                    this.skinType = 'all';
+                    this.concern = 'all';
+                    this.filterProducts();
+                    // Clear history state query params
+                    window.history.replaceState({}, '', window.location.pathname);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

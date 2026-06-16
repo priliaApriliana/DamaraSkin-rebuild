@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ubah Produk - DamaraSkin Admin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="/src/js/app.js"></script>
+    <link rel="stylesheet" href="/src/css/compiled.css">
+</head>
+<body class="font-poppins antialiased text-gray-800 h-full selection:bg-primary/20 selection:text-primary" x-data="{ sidebarOpen: false }">
+    <div class="min-h-full flex">
+        
+        <!-- Sidebar Container -->
+        <div id="admin-sidebar-container"></div>
+
+        <!-- Page wrapper -->
+        <div class="md:pl-64 flex flex-col flex-1 w-0">
+            <!-- Mobile header -->
+            <div class="sticky top-0 z-10 md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3 bg-white border-b border-gray-200 flex items-center h-16">
+                <button @click="sidebarOpen = true" class="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-xl text-gray-500 hover:text-gray-900 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <div class="ml-4 flex items-center gap-2">
+                    <img src="/images/logo.png" alt="DamaraSkin Logo" class="h-8 w-auto">
+                    <span class="font-brush text-2xl text-primary font-bold">DamaraSkin Admin</span>
+                </div>
+            </div>
+
+            <main class="flex-grow py-6 px-4 sm:px-6 lg:px-8" x-data="editProductPage()">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-8 flex justify-between items-center border-b border-gray-150 pb-5">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-800">Ubah Produk</h1>
+                            <p class="text-xs text-gray-500 mt-1" x-text="'Edit detail untuk ' + name"></p>
+                        </div>
+                        <a href="/admin/products.html" class="text-xs font-bold text-primary hover:text-accent transition">&larr; Kembali ke Daftar</a>
+                    </div>
+
+                    <!-- Edit Form -->
+                    <template x-if="product">
+                        <div class="bg-white rounded-2xl border border-gray-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] p-6 sm:p-8 max-w-3xl">
+                            <form @submit.prevent="submitProduct()" class="space-y-6">
+                                
+                                <!-- Product Name -->
+                                <div>
+                                    <label for="name" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nama Produk</label>
+                                    <input type="text" x-model="name" @input="generateSlug()" id="name" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-4 focus:ring-primary/10 rounded-xl text-sm text-gray-700 transition">
+                                </div>
+
+                                <!-- Product Slug -->
+                                <div>
+                                    <label for="slug" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Slug URL</label>
+                                    <input type="text" x-model="slug" id="slug" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-4 focus:ring-primary/10 rounded-xl text-sm text-gray-700 transition">
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                                    <!-- Category -->
+                                    <div>
+                                        <label for="category" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Kategori</label>
+                                        <select x-model="category" id="category" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-4 focus:ring-primary/10 rounded-xl text-sm text-gray-700 transition font-bold">
+                                            <option value="moisturizer">Moisturizer</option>
+                                            <option value="serum">Serum</option>
+                                            <option value="toner">Toner</option>
+                                            <option value="cleanser">Cleanser</option>
+                                            <option value="sunscreen">Sunscreen</option>
+                                        </select>
+                                    </div>
+                                    <!-- Price -->
+                                    <div>
+                                        <label for="price" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Harga (Rupiah)</label>
+                                        <input type="number" x-model.number="price" id="price" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-4 focus:ring-primary/10 rounded-xl text-sm text-gray-700 transition">
+                                    </div>
+                                    <!-- Stock -->
+                                    <div>
+                                        <label for="stock" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Jumlah Stok</label>
+                                        <input type="number" x-model.number="stock" id="stock" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-4 focus:ring-primary/10 rounded-xl text-sm text-gray-700 transition">
+                                    </div>
+                                </div>
+
+                                <!-- Skin Type Suitability -->
+                                <div>
+                                    <label for="skin_type" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Kecocokan Jenis Kulit</label>
+                                    <select x-model="skin_type" id="skin_type" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-4 focus:ring-primary/10 rounded-xl text-sm text-gray-700 transition font-bold">
+                                        <option value="all">Semua Jenis Kulit (All Skin Types)</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="oily">Oily</option>
+                                        <option value="dry">Dry</option>
+                                        <option value="combination">Combination</option>
+                                        <option value="sensitive">Sensitive</option>
+                                    </select>
+                                </div>
+
+                                <!-- Concerns Suitability -->
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Mengatasi Keluhan</label>
+                                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-2">
+                                        <template x-for="opt in [['acne', 'Jerawat'], ['brightening', 'Kusam'], ['anti_aging', 'Penuaan'], ['hydrating', 'Kering'], ['pore', 'Pori-Pori']]" :key="opt[0]">
+                                            <label class="inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" :value="opt[0]" x-model="concern" class="rounded border-gray-300 text-primary focus:ring-primary">
+                                                <span class="ml-2 text-sm text-gray-650" x-text="opt[1]"></span>
+                                            </label>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div>
+                                    <label for="description" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Deskripsi Lengkap Produk</label>
+                                    <textarea x-model="description" id="description" rows="4" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-4 focus:ring-primary/10 rounded-xl text-sm text-gray-700 transition"></textarea>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="pt-4 flex justify-end space-x-3">
+                                    <a href="/admin/products.html" class="px-6 py-3 border border-gray-200 text-xs font-bold rounded-xl text-gray-500 hover:bg-gray-55 transition">Batal</a>
+                                    <button type="submit" class="px-6 py-3 bg-primary hover:bg-accent text-white text-xs font-bold rounded-xl transition shadow-md shadow-primary/15">Simpan Perubahan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </template>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function editProductPage() {
+            return {
+                product: null,
+                name: '',
+                slug: '',
+                category: 'moisturizer',
+                price: '',
+                stock: '',
+                skin_type: 'all',
+                concern: [],
+                description: '',
+                init() {
+                    const params = new URLSearchParams(window.location.search);
+                    const id = params.get('id');
+                    if (!id) {
+                        window.location.href = '/admin/products.html';
+                        return;
+                    }
+                    this.product = window.db.getProductById(id);
+                    if (!this.product) {
+                        window.location.href = '/admin/products.html';
+                        return;
+                    }
+
+                    this.name = this.product.name;
+                    this.slug = this.product.slug;
+                    this.category = this.product.category;
+                    this.price = this.product.price;
+                    this.stock = this.product.stock;
+                    this.skin_type = this.product.skin_type;
+                    this.concern = this.product.concern || [];
+                    this.description = this.product.description;
+                },
+                generateSlug() {
+                    this.slug = this.name.toLowerCase()
+                        .replace(/[^\w ]+/g, '')
+                        .replace(/ +/g, '-');
+                },
+                submitProduct() {
+                    const productData = {
+                        id: this.product.id,
+                        name: this.name,
+                        slug: this.slug,
+                        category: this.category,
+                        price: parseFloat(this.price),
+                        stock: parseInt(this.stock),
+                        skin_type: this.skin_type,
+                        concern: this.concern,
+                        description: this.description,
+                        images: this.product.images
+                    };
+
+                    const saved = window.db.saveProduct(productData);
+                    if (saved) {
+                        window.location.href = '/admin/products.html';
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

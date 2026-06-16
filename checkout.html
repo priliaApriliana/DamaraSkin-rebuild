@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout - DamaraSkin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script type="module" src="/src/js/app.js"></script>
+    <link rel="stylesheet" href="/src/css/compiled.css">
+</head>
+<body class="font-poppins antialiased bg-[#FAF7F6] text-dark-text min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header Banner -->
+    <div class="bg-gradient-to-r from-[#FFF6F6] via-[#FFF1F3] to-[#FFF9FA] border-b border-primary/5 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight leading-none">Checkout</h1>
+            <p class="text-sm text-gray-500 mt-2">Lengkapi rincian pengiriman dan lakukan pembayaran untuk menyelesaikan pembelian Anda.</p>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="py-12 bg-white" x-data="checkoutPage()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div x-show="alertError" class="bg-red-50 border border-red-200 text-red-755 px-4 py-3 rounded-2xl mb-8 flex justify-between items-center" x-cloak>
+                <span class="text-sm font-medium" x-text="alertError"></span>
+                <button @click="alertError = ''" class="text-red-500 hover:text-red-700">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+            </div>
+
+            <form @submit.prevent="submitCheckout()">
+                <div class="lg:grid lg:grid-cols-12 lg:gap-10">
+                    
+                    <!-- Delivery & Payment Info (8 cols) -->
+                    <div class="lg:col-span-8 space-y-10 mb-8 lg:mb-0">
+                        
+                        <!-- Delivery Section -->
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3 mb-6">Informasi Pengiriman</h2>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                                <div>
+                                    <label for="recipient_name" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nama Penerima</label>
+                                    <input type="text" x-model="recipientName" id="recipient_name" required class="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition">
+                                </div>
+                                <div>
+                                    <label for="recipient_phone" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nomor Telepon Penerima</label>
+                                    <input type="text" x-model="recipientPhone" id="recipient_phone" required class="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Contoh: 08123456789">
+                                </div>
+                            </div>
+
+                            <div class="mb-5">
+                                <label for="shipping_address" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Alamat Pengiriman Lengkap</label>
+                                <textarea x-model="shippingAddress" id="shipping_address" rows="3" required class="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Tuliskan alamat lengkap beserta kode pos..."></textarea>
+                            </div>
+
+                            <div>
+                                <label for="notes" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Catatan Tambahan (Opsional)</label>
+                                <textarea x-model="notes" id="notes" rows="2" class="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Instruksi pengiriman (contoh: titip di satpam)..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Payment Section -->
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3 mb-6">Metode Pembayaran</h2>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <!-- Bank Transfer -->
+                                <label class="relative border border-gray-200 rounded-2xl p-5 flex flex-col items-center justify-center cursor-pointer hover:border-primary/45 hover:bg-primary/5 transition duration-300 group">
+                                    <input type="radio" name="payment_method" value="transfer_bank" x-model="paymentMethod" class="absolute top-4 right-4 text-primary focus:ring-primary">
+                                    <svg class="h-8 w-8 text-primary mb-2 group-hover:scale-105 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                    <span class="text-sm font-semibold text-gray-700 text-center">Transfer Bank</span>
+                                </label>
+
+                                <!-- E-Wallet -->
+                                <label class="relative border border-gray-200 rounded-2xl p-5 flex flex-col items-center justify-center cursor-pointer hover:border-primary/45 hover:bg-primary/5 transition duration-300 group">
+                                    <input type="radio" name="payment_method" value="e_wallet" x-model="paymentMethod" class="absolute top-4 right-4 text-primary focus:ring-primary">
+                                    <svg class="h-8 w-8 text-primary mb-2 group-hover:scale-105 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                    <span class="text-sm font-semibold text-gray-700 text-center">E-Wallet (OVO/GOPAY)</span>
+                                </label>
+
+                                <!-- COD -->
+                                <label class="relative border border-gray-200 rounded-2xl p-5 flex flex-col items-center justify-center cursor-pointer hover:border-primary/45 hover:bg-primary/5 transition duration-300 group">
+                                    <input type="radio" name="payment_method" value="cod" x-model="paymentMethod" class="absolute top-4 right-4 text-primary focus:ring-primary">
+                                    <svg class="h-8 w-8 text-primary mb-2 group-hover:scale-105 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                    <span class="text-sm font-semibold text-gray-700 text-center">Bayar di Tempat (COD)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Sidebar (4 cols) -->
+                    <div class="lg:col-span-4">
+                        <div class="bg-[#FAF7F6] p-6 sm:p-8 rounded-3xl border border-primary/5">
+                            <h2 class="text-base font-bold text-gray-800 border-b border-primary/10 pb-3 mb-5">Rincian Pesanan</h2>
+
+                            <!-- Product List -->
+                            <div class="space-y-4 mb-6 max-h-48 overflow-y-auto pr-1">
+                                <template x-for="item in cartItems" :key="item.id">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div class="flex-grow pr-4">
+                                            <p class="font-semibold text-gray-800 line-clamp-1" x-text="item.product.name"></p>
+                                            <p class="text-xs text-gray-400" x-text="'Qty: ' + item.quantity + ' x ' + formatPrice(item.product.price)"></p>
+                                        </div>
+                                        <span class="font-bold text-gray-800 flex-shrink-0" x-text="formatPrice(item.product.price * item.quantity)"></span>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <hr class="border-gray-250 mb-6">
+
+                            <!-- Pricing Summary -->
+                            <div class="space-y-4 mb-8">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-505 font-medium">Subtotal</span>
+                                    <span class="font-bold text-gray-800" x-text="formatPrice(subtotal)"></span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-505 font-medium">Biaya Pengiriman</span>
+                                    <span class="font-bold text-gray-800" x-text="formatPrice(shippingCost)"></span>
+                                </div>
+                                <hr class="border-gray-250">
+                                <div class="flex justify-between text-base font-bold">
+                                    <span class="text-gray-800">Total Harga</span>
+                                    <span class="text-primary text-lg font-extrabold" x-text="formatPrice(total)"></span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full inline-flex justify-center items-center px-6 py-3.5 border border-transparent text-sm font-bold rounded-2xl text-white bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition duration-300 shadow-lg shadow-primary/20">
+                                <svg class="h-4.5 w-4.5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                Konfirmasi & Bayar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script>
+        function checkoutPage() {
+            return {
+                cartItems: [],
+                subtotal: 0,
+                shippingCost: 15000,
+                total: 0,
+                recipientName: '',
+                recipientPhone: '',
+                shippingAddress: '',
+                notes: '',
+                paymentMethod: 'transfer_bank',
+                alertError: '',
+                init() {
+                    const user = window.db.getCurrentUser();
+                    if (!user) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    this.recipientName = user.name || '';
+                    this.recipientPhone = user.phone || '';
+                    this.shippingAddress = user.address || '';
+
+                    // Load cart items
+                    const rawCart = window.db.getCart();
+                    if (rawCart.length === 0) {
+                        window.location.href = '/cart.html';
+                        return;
+                    }
+                    this.cartItems = rawCart.map(item => {
+                        const product = window.db.getProductById(item.product_id);
+                        return {
+                            ...item,
+                            product
+                        };
+                    }).filter(item => item.product !== undefined);
+
+                    this.subtotal = this.cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+                    this.total = this.subtotal + this.shippingCost;
+                },
+                submitCheckout() {
+                    this.alertError = '';
+                    const res = window.db.checkout(
+                        this.recipientName,
+                        this.recipientPhone,
+                        this.shippingAddress,
+                        this.notes,
+                        this.paymentMethod
+                    );
+                    if (res.success) {
+                        // Redirect to success screen
+                        window.location.href = `/order-success.html?order_number=${res.order.order_number}`;
+                    } else {
+                        this.alertError = res.message;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

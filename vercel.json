@@ -1,0 +1,49 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/admin/dashboard",
+      "destination": "/admin/dashboard.html"
+    },
+    {
+      "source": "/admin/products",
+      "destination": "/admin/products.html"
+    },
+    {
+      "source": "/admin/product-create",
+      "destination": "/admin/product-create.html"
+    },
+    {
+      "source": "/admin/product-edit",
+      "destination": "/admin/product-edit.html"
+    },
+    {
+      "source": "/admin/orders",
+      "destination": "/admin/orders.html"
+    },
+    {
+      "source": "/admin/order-detail",
+      "destination": "/admin/order-detail.html"
+    },
+    {
+      "source": "/admin/users",
+      "destination": "/admin/users.html"
+    },
+    {
+      "source": "/admin/articles",
+      "destination": "/admin/articles.html"
+    },
+    {
+      "source": "/admin/article-create",
+      "destination": "/admin/article-create.html"
+    },
+    {
+      "source": "/admin/article-edit",
+      "destination": "/admin/article-edit.html"
+    },
+    {
+      "source": "/admin/profile",
+      "destination": "/admin/profile.html"
+    }
+  ]
+}

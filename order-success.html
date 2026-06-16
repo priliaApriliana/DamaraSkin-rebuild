@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pembelian Sukses - DamaraSkin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script type="module" src="/src/js/app.js"></script>
+    <link rel="stylesheet" href="/src/css/compiled.css">
+</head>
+<body class="font-poppins antialiased bg-[#FAF7F6] text-dark-text min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center py-16 bg-white" x-data="successPage()">
+        <div class="max-w-md w-full px-6 text-center">
+            <!-- Checkmark Icon Circle -->
+            <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 text-green-500 mb-8 shadow-inner animate-bounce">
+                <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight leading-none mb-3">Pesanan Berhasil Dibuat!</h1>
+            <p class="text-sm text-gray-500 mb-6 leading-relaxed">Terima kasih atas kepercayaan Anda berbelanja di DamaraSkin. Pesanan Anda telah tersimpan dan siap diproses.</p>
+
+            <div class="bg-[#FAF7F6] border border-primary/5 rounded-3xl p-6 mb-8 text-left">
+                <div class="flex justify-between border-b border-gray-150 pb-3.5 mb-3.5 text-sm">
+                    <span class="text-gray-400 font-bold uppercase tracking-wider text-xs">Nomor Pesanan</span>
+                    <span class="font-extrabold text-gray-800" x-text="orderNumber"></span>
+                </div>
+                <p class="text-xs text-gray-450 leading-relaxed font-medium">Anda dapat melihat status terbaru, tracking pengiriman paket, dan detail kuitansi belanja secara berkala di riwayat transaksi akun Anda.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/orders.html" class="inline-flex justify-center items-center px-6 py-3.5 text-sm font-bold rounded-2xl text-white bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition duration-300 shadow-md shadow-primary/10">
+                    Riwayat Transaksi
+                </a>
+                <a href="/products.html" class="inline-flex justify-center items-center px-6 py-3.5 text-sm font-bold rounded-2xl text-primary bg-[#FAF7F6] border border-primary/10 hover:bg-primary/5 transition duration-300">
+                    Lanjut Belanja
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script>
+        function successPage() {
+            return {
+                orderNumber: '',
+                init() {
+                    const params = new URLSearchParams(window.location.search);
+                    this.orderNumber = params.get('order_number') || 'ORD-UNKNOWN';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Keranjang Belanja - DamaraSkin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/module.esm.js"></script>
+  <script type="module" crossorigin src="/assets/compiled-KLbNheu3.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/compiled-DXAZJh9h.css">
+</head>
+<body class="font-poppins antialiased bg-[#FAF7F6] text-dark-text min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header Banner -->
+    <div class="bg-gradient-to-r from-[#FFF6F6] via-[#FFF1F3] to-[#FFF9FA] border-b border-primary/5 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight leading-none">Keranjang Belanja</h1>
+            <p class="text-sm text-gray-500 mt-2">Periksa produk pilihan Anda sebelum menyelesaikan transaksi pembelian.</p>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow py-12 bg-white" x-data="cartPage()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div x-show="cartItems.length === 0" class="text-center py-16 bg-[#FFF9FA] rounded-3xl border border-primary/5 max-w-xl mx-auto" x-cloak>
+                <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+                <h2 class="text-xl font-bold text-gray-800">Keranjang Belanja Kosong</h2>
+                <p class="mt-2 text-sm text-gray-505">Anda belum menambahkan produk apa pun ke keranjang belanja Anda.</p>
+                <div class="mt-8">
+                    <a href="/products.html" class="inline-flex items-center px-8 py-3.5 bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary text-white font-bold rounded-2xl text-sm transition duration-300 shadow-lg shadow-primary/20">
+                        Belanja Sekarang
+                    </a>
+                </div>
+            </div>
+
+            <div x-show="cartItems.length > 0" class="lg:grid lg:grid-cols-12 lg:gap-10" x-cloak>
+                <!-- Cart Items List (8 cols) -->
+                <div class="lg:col-span-8 mb-8 lg:mb-0">
+                    <div class="space-y-6">
+                        <template x-for="item in cartItems" :key="item.id">
+                            <div class="flex items-center flex-col sm:flex-row pb-6 border-b border-gray-100 last:border-0 last:pb-0 gap-4">
+                                <!-- Thumbnail -->
+                                <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm">
+                                    <img :src="item.product.images[0]" :alt="item.product.name" class="h-full w-full object-cover">
+                                </div>
+
+                                <!-- Product Info -->
+                                <div class="flex-grow text-center sm:text-left">
+                                    <h3 class="text-sm font-semibold text-gray-800">
+                                        <a :href="'/product-detail.html?slug=' + item.product.slug" class="hover:text-primary transition" x-text="item.product.name"></a>
+                                    </h3>
+                                    <p class="text-xs text-gray-400 mt-1 capitalize" x-text="item.product.category"></p>
+                                    <p class="text-sm text-primary font-bold mt-1.5" x-text="formatPrice(item.product.price)"></p>
+                                </div>
+
+                                <!-- Quantity Selector -->
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex items-center border border-gray-250 rounded-full overflow-hidden bg-gray-50">
+                                        <button @click="decreaseQty(item)" :disabled="item.quantity <= 1" class="px-3 py-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-50 font-bold">-</button>
+                                        <span class="w-8 text-center text-sm font-bold text-gray-700" x-text="item.quantity"></span>
+                                        <button @click="increaseQty(item)" :disabled="item.quantity >= item.product.stock" class="px-3 py-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-50 font-bold">+</button>
+                                    </div>
+                                </div>
+
+                                <!-- Subtotal -->
+                                <div class="text-right w-24">
+                                    <p class="text-sm font-bold text-gray-800" x-text="formatPrice(item.product.price * item.quantity)"></p>
+                                </div>
+
+                                <!-- Delete Item Button -->
+                                <div>
+                                    <button @click="removeItem(item)" class="p-2 text-gray-400 hover:text-red-505 hover:bg-red-50 rounded-full transition">
+                                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Order Summary (4 cols) -->
+                <div class="lg:col-span-4">
+                    <div class="bg-[#FAF7F6] p-6 sm:p-8 rounded-3xl border border-primary/5">
+                        <h2 class="text-base font-bold text-gray-800 border-b border-primary/10 pb-3 mb-5">Ringkasan Belanja</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Subtotal</span>
+                                <span class="font-bold text-gray-800" x-text="formatPrice(subtotal)"></span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Biaya Pengiriman</span>
+                                <span class="font-bold text-gray-800" x-text="formatPrice(shippingCost)"></span>
+                            </div>
+                            
+                            <hr class="border-gray-250">
+                            
+                            <div class="flex justify-between text-base font-bold">
+                                <span class="text-gray-800">Total Harga</span>
+                                <span class="text-primary text-lg font-extrabold" x-text="formatPrice(total)"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <a href="/checkout.html" class="w-full inline-flex justify-center items-center px-6 py-3.5 border border-transparent text-sm font-bold rounded-2xl text-white bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition duration-300 shadow-lg shadow-primary/20">
+                                Lanjut ke Checkout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script>
+        function cartPage() {
+            return {
+                cartItems: [],
+                subtotal: 0,
+                shippingCost: 15000,
+                total: 0,
+                init() {
+                    this.loadCart();
+                },
+                loadCart() {
+                    const rawItems = window.db.getCart();
+                    this.cartItems = rawItems.map(item => {
+                        const product = window.db.getProductById(item.product_id);
+                        return {
+                            ...item,
+                            product
+                        };
+                    }).filter(item => item.product !== undefined);
+                    
+                    this.calculateTotals();
+                },
+                calculateTotals() {
+                    this.subtotal = this.cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+                    this.total = this.subtotal + (this.cartItems.length > 0 ? this.shippingCost : 0);
+                },
+                decreaseQty(item) {
+                    if (item.quantity > 1) {
+                        const res = window.db.updateCartQty(item.id, item.quantity - 1);
+                        if (res.success) this.loadCart();
+                    }
+                },
+                increaseQty(item) {
+                    const res = window.db.updateCartQty(item.id, item.quantity + 1);
+                    if (res.success) this.loadCart();
+                },
+                removeItem(item) {
+                    window.db.removeFromCart(item.id);
+                    this.loadCart();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

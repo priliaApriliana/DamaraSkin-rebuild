@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #c1768a;
+  --color-primary-light: #f3c2ce;
+  --color-primary-dark: #a05970;
+  --color-accent: #b08968;
+  --color-bg-cream: #fdf6f0;
+  --color-border-custom: #e8d5d5;
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Poppins', sans-serif;
+  --font-brush: 'Alex Brush', cursive;
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+/* Base Headings Style */
+h1, h2, h3, .font-playfair {
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+
+body, p, span, a, button, input, label, select, textarea {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Button primary & secondary consistency overrides */
+.btn-primary {
+  background-color: #c1768a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: #a05970;
+  box-shadow: 0 4px 14px rgba(193, 118, 138, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #c1768a;
+  border: 2px solid #c1768a;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+  background-color: rgba(193, 118, 138, 0.05);
+}
+
+/* Collapsible responsive helper classes */
+@media (max-width: 767px) {
+  .grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+  .grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}

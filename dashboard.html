@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Skin Profile & Recommendations - DamaraSkin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script type="module" src="/src/js/app.js"></script>
+    <link rel="stylesheet" href="/src/css/compiled.css">
+</head>
+<body class="font-poppins antialiased bg-[#FAF7F6] text-dark-text min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <main class="flex-grow" x-data="dashboardPage()">
+        <!-- Top Banner Section -->
+        <div class="bg-gradient-to-r from-[#FFF6F6] via-[#FFF1F3] to-[#FFF9FA] border-b border-primary/5 py-16 sm:py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- If NOT filled questionnaire -->
+                <template x-if="!hasFilledQuestionnaire">
+                    <div class="text-center max-w-2xl mx-auto">
+                        <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary uppercase tracking-wider mb-4 animate-pulse">
+                            Smart Skin Analyzer
+                        </span>
+                        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-none tracking-tight">
+                            Konsultasi Kulit Cerdas
+                        </h1>
+                        <p class="text-sm text-gray-500 mt-4 leading-relaxed pl-0.5">
+                            Dapatkan kurasi rekomendasi produk skincare terbaik berdasarkan analisa profil kondisi kulit wajah Anda secara instan.
+                        </p>
+                    </div>
+                </template>
+
+                <!-- If filled questionnaire -->
+                <template x-if="hasFilledQuestionnaire">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+                        <div>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary uppercase tracking-wider mb-3">
+                                Profil Analisis Kulit Anda
+                            </span>
+                            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-none">
+                                Halo, <span class="text-primary" x-text="user.name"></span>
+                            </h1>
+                            <p class="text-sm text-gray-500 mt-2">Berikut adalah kondisi kulit Anda saat ini berdasarkan hasil analisis terbaru:</p>
+                            
+                            <div class="flex flex-wrap gap-2.5 mt-5">
+                                <span class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-full shadow-md shadow-primary/10" x-text="'Tipe Kulit: ' + user.skin_type.charAt(0).toUpperCase() + user.skin_type.slice(1)"></span>
+                                <template x-for="con in user.skin_concerns" :key="con">
+                                    <span class="bg-white text-gray-700 text-xs font-semibold px-4 py-2 rounded-full border border-primary/10 shadow-sm" x-text="'Keluhan: ' + con.charAt(0).toUpperCase() + con.slice(1).replace('_', ' ')"></span>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0">
+                            <button @click="resetForm()" class="inline-flex items-center justify-center px-6 py-3 border border-primary/20 text-sm font-semibold rounded-full text-primary bg-white hover:bg-primary/5 hover:scale-105 transform transition duration-300">
+                                <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H17.51"/></svg>
+                                Ulangi Analisis Kulit
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div x-show="alertSuccess" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6" x-cloak>
+            <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-2xl flex justify-between items-center">
+                <span class="text-sm font-medium" x-text="alertSuccess"></span>
+                <button @click="alertSuccess = ''" class="text-green-500 hover:text-green-700">
+                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="py-12 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Questionnaire Form if NOT filled -->
+                <div x-show="!hasFilledQuestionnaire" x-cloak class="max-w-4xl mx-auto bg-white rounded-3xl border border-gray-100 shadow-[0_15px_50px_-15px_rgba(193,118,138,0.12)] p-6 sm:p-10 mb-12">
+                    <form @submit.prevent="submitForm()" class="space-y-10">
+                        <!-- Step 1: Skin Type -->
+                        <div class="space-y-4">
+                            <label class="block text-lg font-bold text-gray-900 font-playfair">1. Apa tipe kulit wajah Anda secara umum?</label>
+                            <p class="text-sm text-gray-500">Pilih salah satu kondisi yang paling menggambarkan kulit Anda sehari-hari.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div @click="skin_type = 'normal'"
+                                     :class="skin_type === 'normal' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Normal</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="skin_type === 'normal' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="skin_type === 'normal'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Terasa seimbang, tidak terlalu berminyak maupun terlalu kering.</p>
+                                </div>
+
+                                <div @click="skin_type = 'dry'"
+                                     :class="skin_type === 'dry' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Kering</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="skin_type === 'dry' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="skin_type === 'dry'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Terasa kencang, kasar, bersisik, atau terlihat kusam.</p>
+                                </div>
+
+                                <div @click="skin_type = 'oily'"
+                                     :class="skin_type === 'oily' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Berminyak</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="skin_type === 'oily' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="skin_type === 'oily'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Terlihat berkilau berlebih, terutama di seluruh wajah, pori-pori besar, dan mudah berjerawat.</p>
+                                </div>
+
+                                <div @click="skin_type = 'combination'"
+                                     :class="skin_type === 'combination' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Kombinasi</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="skin_type === 'combination' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="skin_type === 'combination'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Berminyak di area T-zone (dahi, hidung, dagu) dan kering/normal di area pipi.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Skin Concerns -->
+                        <div class="space-y-4">
+                            <label class="block text-lg font-bold text-gray-900 font-playfair">2. Apa keluhan atau target kulit yang ingin Anda atasi?</label>
+                            <p class="text-sm text-gray-500">Pilih semua keluhan yang sesuai (Anda bisa memilih lebih dari satu).</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div @click="skin_concerns.includes('acne') ? skin_concerns = skin_concerns.filter(c => c !== 'acne') : skin_concerns.push('acne')"
+                                     :class="skin_concerns.includes('acne') ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Jerawat & Komedo</span>
+                                        <div class="w-4 h-4 rounded-md border flex items-center justify-center" :class="skin_concerns.includes('acne') ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="skin_concerns.includes('acne')"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Mengurangi bruntusan, komedo, jerawat aktif, atau kemerahan bekas jerawat.</p>
+                                </div>
+
+                                <div @click="skin_concerns.includes('brightening') ? skin_concerns = skin_concerns.filter(c => c !== 'brightening') : skin_concerns.push('brightening')"
+                                     :class="skin_concerns.includes('brightening') ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Kulit Kusam & Belang</span>
+                                        <div class="w-4 h-4 rounded-md border flex items-center justify-center" :class="skin_concerns.includes('brightening') ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="skin_concerns.includes('brightening')"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Mencerahkan warna kulit kusam, menyamarkan noda hitam/flek, meratakan warna kulit.</p>
+                                </div>
+
+                                <div @click="skin_concerns.includes('anti_aging') ? skin_concerns = skin_concerns.filter(c => c !== 'anti_aging') : skin_concerns.push('anti_aging')"
+                                     :class="skin_concerns.includes('anti_aging') ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Garis Halus & Penuaan</span>
+                                        <div class="w-4 h-4 rounded-md border flex items-center justify-center" :class="skin_concerns.includes('anti_aging') ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="skin_concerns.includes('anti_aging')"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Mencegah kerutan halus, menjaga kekencangan dan elastisitas kulit.</p>
+                                </div>
+
+                                <div @click="skin_concerns.includes('hydrating') ? skin_concerns = skin_concerns.filter(c => c !== 'hydrating') : skin_concerns.push('hydrating')"
+                                     :class="skin_concerns.includes('hydrating') ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Kulit Kering & Dehidrasi</span>
+                                        <div class="w-4 h-4 rounded-md border flex items-center justify-center" :class="skin_concerns.includes('hydrating') ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="skin_concerns.includes('hydrating')"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Mengatasi kulit kering mengelupas, kasar, mengembalikan kelembapan optimal.</p>
+                                </div>
+
+                                <div @click="skin_concerns.includes('pore') ? skin_concerns = skin_concerns.filter(c => c !== 'pore') : skin_concerns.push('pore')"
+                                     :class="skin_concerns.includes('pore') ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Pori-Pori & Tekstur</span>
+                                        <div class="w-4 h-4 rounded-md border flex items-center justify-center" :class="skin_concerns.includes('pore') ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="skin_concerns.includes('pore')"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Menghaluskan tekstur kulit tidak rata, dan mengecilkan tampilan pori-pori besar.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Sensitivity -->
+                        <div class="space-y-4">
+                            <label class="block text-lg font-bold text-gray-900 font-playfair">3. Apakah kulit Anda mudah mengalami iritasi atau sensitif?</label>
+                            <p class="text-sm text-gray-500">Pilih tingkat sensitivitas kulit Anda saat menggunakan produk kecantikan.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div @click="sensitivity = 'normal'"
+                                     :class="sensitivity === 'normal' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Normal (Tidak Sensitif)</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="sensitivity === 'normal' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="sensitivity === 'normal'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Kulit jarang memerah, perih, atau gatal saat mencoba berbagai produk skincare baru.</p>
+                                </div>
+
+                                <div @click="sensitivity = 'sensitif'"
+                                     :class="sensitivity === 'sensitif' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Sensitif / Mudah Iritasi</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="sensitivity === 'sensitif' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="sensitivity === 'sensitif'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Sering kemerahan, terasa perih, gatal, atau bersisik terutama saat terpapar bahan aktif atau polusi.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Sun Exposure -->
+                        <div class="space-y-4">
+                            <label class="block text-lg font-bold text-gray-900 font-playfair">4. Bagaimana aktivitas Anda di bawah paparan sinar matahari langsung?</label>
+                            <p class="text-sm text-gray-500">Membantu menentukan tingkat perlindungan UV dan perbaikan kulit yang dibutuhkan.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div @click="sun_exposure = 'jarang'"
+                                     :class="sun_exposure === 'jarang' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Jarang (Dalam Ruangan)</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="sun_exposure === 'jarang' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="sun_exposure === 'jarang'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Lebih sering beraktivitas di ruang tertutup ber-AC (seperti kantor, ruang kelas, atau rumah).</p>
+                                </div>
+
+                                <div @click="sun_exposure = 'sering'"
+                                     :class="sun_exposure === 'sering' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Sering (Luar Ruangan)</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="sun_exposure === 'sering' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="sun_exposure === 'sering'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Sering beraktivitas di luar ruangan langsung terpapar matahari (berkendara motor, olahraga outdoor, dll).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Water Intake -->
+                        <div class="space-y-4">
+                            <label class="block text-lg font-bold text-gray-900 font-playfair">5. Bagaimana kebiasaan konsumsi air putih Anda sehari-hari?</label>
+                            <p class="text-sm text-gray-500">Membantu mengevaluasi hidrasi alami kulit dari dalam tubuh.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div @click="water_intake = 'cukup'"
+                                     :class="water_intake === 'cukup' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Cukup (Min. 8 Gelas / 2 Liter)</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="water_intake === 'cukup' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="water_intake === 'cukup'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Teratur minum air putih secukupnya, metabolisme dan hidrasi kulit terjaga baik.</p>
+                                </div>
+
+                                <div @click="water_intake = 'kurang'"
+                                     :class="water_intake === 'kurang' ? 'border-primary bg-[#FFF5F6] ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary-light hover:bg-[#FAF7F6]'"
+                                     class="flex flex-col p-5 border rounded-2xl cursor-pointer transition-all duration-300">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="font-semibold text-gray-800">Kurang (Di bawah 8 Gelas / 2 Liter)</span>
+                                        <div class="w-4 h-4 rounded-full border flex items-center justify-center" :class="water_intake === 'kurang' ? 'border-primary bg-primary' : 'border-gray-300 bg-white'">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-white" x-show="water_intake === 'kurang'"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed">Jarang minum air putih, kulit rentan dehidrasi dari dalam dan tampak kurang kenyal.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-6 flex justify-center">
+                            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 border border-transparent text-base font-semibold rounded-full text-white bg-primary hover:bg-accent transition duration-300 shadow-lg shadow-primary/20 hover:scale-105 transform cursor-pointer">
+                                Analisis Kulit & Tampilkan Rekomendasi
+                                <svg class="ml-2 -mr-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Recommended products if filled -->
+                <div x-show="hasFilledQuestionnaire" x-cloak>
+                    <div class="mb-10 text-center md:text-left">
+                        <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Rekomendasi Skincare yang Cocok untuk Anda</h2>
+                        <p class="text-sm text-gray-500 mt-2">Berikut adalah produk skincare kurasi terbaik yang kami cocokkan khusus untuk profil kulit Anda.</p>
+                    </div>
+
+                    <template x-if="recommendedProducts.length === 0">
+                        <div class="text-center py-16 bg-[#FFF9FA] rounded-3xl border border-primary/5">
+                            <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <h3 class="text-lg font-bold text-gray-800">Tidak Ada Produk yang Cocok</h3>
+                            <p class="text-sm text-gray-500 mt-2 max-w-sm mx-auto">Kami tidak dapat menemukan produk yang sesuai dengan filter kulit Anda saat ini. Silakan coba atur ulang analisis kulit Anda.</p>
+                        </div>
+                    </template>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <template x-for="product in recommendedProducts" :key="product.id">
+                            <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(245,128,157,0.12)] hover:-translate-y-1.5 transform transition-all duration-500 flex flex-col h-full group">
+                                <div class="relative pt-[100%] overflow-hidden bg-gray-100">
+                                    <img :src="product.images[0]" :alt="product.name" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-primary text-xs font-semibold px-3 py-1 rounded-full border border-primary/10" x-text="product.category.charAt(0).toUpperCase() + product.category.slice(1)"></span>
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow">
+                                    <div class="flex items-center space-x-1 mb-2">
+                                        <div class="flex" x-html="renderStars(product.rating)"></div>
+                                        <span class="text-xs text-gray-400 font-medium" x-text="'(' + product.rating + ')'"></span>
+                                    </div>
+                                    <h3 class="text-gray-800 font-semibold text-base mb-1 line-clamp-1 group-hover:text-primary transition-colors duration-200" x-text="product.name"></h3>
+                                    <span class="text-[11px] text-gray-400 font-medium mb-3">
+                                        Cocok untuk: <span class="text-primary" x-text="product.skin_type === 'all' ? 'Semua Jenis Kulit' : product.skin_type.charAt(0).toUpperCase() + product.skin_type.slice(1)"></span>
+                                    </span>
+                                    <p class="text-xs text-gray-500 line-clamp-2 mb-4 leading-relaxed flex-grow" x-text="product.description"></p>
+                                    <div class="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between">
+                                        <span class="text-primary font-bold text-base" x-text="formatPrice(product.price)"></span>
+                                        <a :href="'/product-detail.html?slug=' + product.slug" class="inline-flex items-center justify-center px-4 py-1.5 text-xs font-semibold text-white bg-primary hover:bg-accent rounded-full transition-colors duration-300 shadow-md shadow-primary/10">Lihat Detail</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Featured Tip Section -->
+        <div class="py-16 bg-gradient-to-r from-[#FFF5F6] via-[#FFF9FB] to-[#FFF6F7] border-y border-primary/5">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="inline-flex items-center px-3.5 py-1 rounded-full text-[10px] font-bold bg-white text-primary border border-primary/10 shadow-sm uppercase tracking-wider mb-4">
+                    ðŸ’¡ Skincare Tip of the Day
+                </span>
+                <blockquote class="text-xl sm:text-2xl font-medium text-gray-800 italic leading-relaxed max-w-3xl mx-auto font-brush text-primary" x-text="'&ldquo;' + tip + '&rdquo;'">
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- Latest Articles Blog Section -->
+        <div class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10">
+                    <div class="text-center sm:text-left">
+                        <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Tips & Edukasi Skincare Terbaru</h2>
+                        <p class="text-sm text-gray-500 mt-2">Perdalam pengetahuan Anda tentang kesehatan dan perawatan kulit wajah.</p>
+                    </div>
+                    <a href="/articles.html" class="mt-4 sm:mt-0 text-sm font-bold text-primary hover:text-accent transition flex items-center justify-center">
+                        Baca Semua Artikel
+                        <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <template x-for="article in articles" :key="article.id">
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(245,128,157,0.12)] hover:-translate-y-1.5 transform transition-all duration-500 flex flex-col h-full group">
+                            <div class="relative pt-[56.25%] overflow-hidden bg-gray-100">
+                                <img :src="article.jetpack_featured_media_url" :alt="article.title.rendered" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">Skincare Tips</span>
+                            </div>
+                            <div class="p-5 flex flex-col flex-grow">
+                                <div class="flex items-center space-x-1.5 text-xs text-gray-400 mb-2">
+                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                    <span x-text="new Date(article.date).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'})"></span>
+                                </div>
+                                <h3 class="text-gray-800 font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-200 leading-snug" x-html="article.title.rendered"></h3>
+                                <p class="text-xs text-gray-500 line-clamp-3 mb-5 leading-relaxed flex-grow" x-text="article.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...'"></p>
+                                <div class="mt-auto pt-3 border-t border-gray-50 flex justify-end">
+                                    <a :href="'/article-detail.html?slug=' + article.slug" class="inline-flex items-center text-xs font-semibold text-primary group-hover:text-accent transition duration-200">
+                                        <span>Baca Selengkapnya</span>
+                                        <svg class="h-3.5 w-3.5 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script>
+        function dashboardPage() {
+            return {
+                user: null,
+                hasFilledQuestionnaire: false,
+                recommendedProducts: [],
+                articles: [],
+                tip: '',
+                alertSuccess: '',
+                
+                // Form model properties
+                skin_type: 'normal',
+                skin_concerns: [],
+                sun_exposure: 'jarang',
+                sensitivity: 'normal',
+                water_intake: 'cukup',
+
+                init() {
+                    this.user = window.db.getCurrentUser();
+                    if (!this.user) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    this.hasFilledQuestionnaire = !!this.user.skin_type;
+                    this.loadRecommendations();
+                    this.loadTipOfTheDay();
+                    this.articles = window.db.getArticles().slice(0, 3);
+                },
+                loadTipOfTheDay() {
+                    const tips = [
+                        'Minum air putih minimal 2 liter sehari agar kulit tetap terhidrasi dari dalam.',
+                        'Jangan pernah melewatkan sunscreen di pagi hari, bahkan ketika cuaca sedang mendung.',
+                        'Double cleansing di malam hari sangat krusial untuk mencegah komedo dan jerawat menumpuk.',
+                        'Gunakan pelembap saat kulit masih setengah basah setelah cuci muka untuk mengunci hidrasi.',
+                        'Hindari menyentuh wajah dengan tangan kotor agar bakteri tidak menyebar dan memicu jerawat.',
+                        'Lakukan eksfoliasi cukup 2-3 kali seminggu untuk mengangkat sel kulit mati tanpa merusak skin barrier.',
+                        'Istirahat tidur yang cukup 7-8 jam semalam membantu mempercepat regenerasi kulit wajah Anda.'
+                    ];
+                    const dayIndex = new Date().getDay(); // 0 to 6 (Sunday to Saturday)
+                    this.tip = tips[dayIndex] || tips[0];
+                },
+                loadRecommendations() {
+                    if (!this.hasFilledQuestionnaire) return;
+                    
+                    const skinType = this.user.skin_type;
+                    const concerns = this.user.skin_concerns || [];
+                    
+                    // Filter matching products
+                    const allProducts = window.db.getProducts();
+                    const filtered = allProducts.filter(p => p.skin_type === 'all' || p.skin_type === skinType);
+                    
+                    // Sort by matching concerns count desc
+                    filtered.sort((a, b) => {
+                        const aMatches = a.concern ? a.concern.filter(con => concerns.includes(con)).length : 0;
+                        const bMatches = b.concern ? b.concern.filter(con => concerns.includes(con)).length : 0;
+                        return bMatches - aMatches;
+                    });
+                    
+                    this.recommendedProducts = filtered.slice(0, 4);
+                },
+                submitForm() {
+                    let type = this.skin_type;
+                    let concerns = [...this.skin_concerns];
+
+                    // Diagnostic override logic
+                    if (this.sensitivity === 'sensitif') {
+                        type = 'sensitive';
+                    }
+                    if (this.water_intake === 'kurang') {
+                        if (!concerns.includes('hydrating')) {
+                            concerns.push('hydrating');
+                        }
+                    }
+                    if (this.sun_exposure === 'sering') {
+                        if (!concerns.includes('anti_aging')) {
+                            concerns.push('anti_aging');
+                        }
+                        if (!concerns.includes('brightening')) {
+                            concerns.push('brightening');
+                        }
+                    }
+
+                    const res = window.db.updateSkinProfile(type, concerns);
+                    if (res.success) {
+                        this.user = window.db.getCurrentUser();
+                        this.hasFilledQuestionnaire = true;
+                        this.loadRecommendations();
+                        this.alertSuccess = 'Skin profile Anda berhasil disimpan! Berikut adalah rekomendasi produk untuk Anda.';
+                        window.dispatchEvent(new Event('user-logged-in'));
+                        setTimeout(() => this.alertSuccess = '', 5000);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                },
+                resetForm() {
+                    const res = window.db.updateSkinProfile(null, null);
+                    if (res.success) {
+                        this.user = window.db.getCurrentUser();
+                        this.hasFilledQuestionnaire = false;
+                        this.recommendedProducts = [];
+                        
+                        // Reset form variables
+                        this.skin_type = 'normal';
+                        this.skin_concerns = [];
+                        this.sun_exposure = 'jarang';
+                        this.sensitivity = 'normal';
+                        this.water_intake = 'cukup';
+                        this.alertSuccess = 'Silakan isi kembali kuesioner skin profile Anda.';
+                        window.dispatchEvent(new Event('user-logged-in'));
+                        setTimeout(() => this.alertSuccess = '', 5000);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

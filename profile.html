@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profil Saya - DamaraSkin</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script type="module" src="/src/js/app.js"></script>
+    <link rel="stylesheet" href="/src/css/compiled.css">
+</head>
+<body class="font-poppins antialiased bg-[#FAF7F6] text-dark-text min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header Banner -->
+    <div class="bg-gradient-to-r from-[#FFF6F6] via-[#FFF1F3] to-[#FFF9FA] border-b border-primary/5 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight leading-none">Pengaturan Profil</h1>
+            <p class="text-sm text-gray-500 mt-2">Perbarui informasi kontak, alamat pengiriman, dan keamanan kata sandi akun Anda.</p>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow py-12 bg-white" x-data="profilePage()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto space-y-10">
+                
+                <!-- Profile Information Card -->
+                <div class="bg-[#FAF7F6] p-6 sm:p-8 rounded-3xl border border-primary/5">
+                    <div class="max-w-xl">
+                        <section>
+                            <header class="mb-6">
+                                <h2 class="text-lg font-bold text-gray-900">Informasi Profil</h2>
+                                <p class="mt-1 text-sm text-gray-500">Perbarui nama lengkap, email, nomor telepon, dan alamat default pengiriman Anda.</p>
+                            </header>
+
+                            <div x-show="infoSuccess" x-transition class="bg-green-50 border border-green-200 text-green-700 px-4 py-2.5 rounded-2xl text-xs font-semibold mb-4" x-cloak>
+                                Profil berhasil diperbarui.
+                            </div>
+
+                            <form @submit.prevent="saveProfile()" class="space-y-6">
+                                <div>
+                                    <label for="name" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                                    <input id="name" x-model="name" type="text" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" />
+                                </div>
+
+                                <div>
+                                    <label for="email" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Email</label>
+                                    <input id="email" x-model="email" type="email" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" />
+                                </div>
+
+                                <div>
+                                    <label for="phone" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nomor Telepon</label>
+                                    <input id="phone" x-model="phone" type="text" class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Contoh: 08123456789" />
+                                </div>
+
+                                <div>
+                                    <label for="address" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Alamat Lengkap Pengiriman</label>
+                                    <textarea id="address" x-model="address" rows="3" class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Tuliskan alamat lengkap pengiriman..."></textarea>
+                                </div>
+
+                                <div class="flex items-center gap-4">
+                                    <button type="submit" class="bg-primary hover:bg-accent text-white text-xs font-bold py-2.5 px-6 rounded-full transition shadow-md shadow-primary/10">
+                                        Simpan Perubahan
+                                    </button>
+                                </div>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Update Password Card -->
+                <div class="bg-[#FAF7F6] p-6 sm:p-8 rounded-3xl border border-primary/5">
+                    <div class="max-w-xl">
+                        <section>
+                            <header class="mb-6">
+                                <h2 class="text-lg font-bold text-gray-900">Ubah Password</h2>
+                                <p class="mt-1 text-sm text-gray-500">Pastikan akun Anda menggunakan password yang aman dan sulit ditebak.</p>
+                            </header>
+
+                            <div x-show="passSuccess" x-transition class="bg-green-50 border border-green-200 text-green-700 px-4 py-2.5 rounded-2xl text-xs font-semibold mb-4" x-cloak>
+                                Password berhasil diperbarui.
+                            </div>
+                            <div x-show="passError" x-transition class="bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-2xl text-xs font-semibold mb-4" x-text="passError" x-cloak></div>
+
+                            <form @submit.prevent="savePassword()" class="space-y-6">
+                                <div>
+                                    <label for="current_password" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Password Saat Ini</label>
+                                    <input id="current_password" x-model="currentPassword" type="password" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" />
+                                </div>
+
+                                <div>
+                                    <label for="password" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Password Baru</label>
+                                    <input id="password" x-model="newPassword" type="password" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" />
+                                </div>
+
+                                <div>
+                                    <label for="password_confirmation" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Konfirmasi Password Baru</label>
+                                    <input id="password_confirmation" x-model="confirmPassword" type="password" required class="block w-full px-4 py-2.5 bg-white border border-gray-200/80 focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" />
+                                </div>
+
+                                <div class="flex items-center gap-4">
+                                    <button type="submit" class="bg-primary hover:bg-accent text-white text-xs font-bold py-2.5 px-6 rounded-full transition shadow-md shadow-primary/10">
+                                        Simpan Password
+                                    </button>
+                                </div>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <script>
+        function profilePage() {
+            return {
+                name: '',
+                email: '',
+                phone: '',
+                address: '',
+                currentPassword: '',
+                newPassword: '',
+                confirmPassword: '',
+                infoSuccess: false,
+                passSuccess: false,
+                passError: '',
+                init() {
+                    const u = window.db.getCurrentUser();
+                    if (u) {
+                        this.name = u.name;
+                        this.email = u.email;
+                        this.phone = u.phone || '';
+                        this.address = u.address || '';
+                    }
+                },
+                saveProfile() {
+                    this.infoSuccess = false;
+                    const res = window.db.updateProfile(this.name, this.email, this.phone, this.address);
+                    if (res.success) {
+                        this.infoSuccess = true;
+                        window.dispatchEvent(new Event('user-logged-in'));
+                        setTimeout(() => this.infoSuccess = false, 3000);
+                    }
+                },
+                savePassword() {
+                    this.passSuccess = false;
+                    this.passError = '';
+                    if (this.newPassword.length < 8) {
+                        this.passError = 'Password baru minimal 8 karakter.';
+                        return;
+                    }
+                    if (this.newPassword !== this.confirmPassword) {
+                        this.passError = 'Konfirmasi password baru tidak cocok.';
+                        return;
+                    }
+                    const res = window.db.updatePassword(this.currentPassword, this.newPassword);
+                    if (res.success) {
+                        this.passSuccess = true;
+                        this.currentPassword = '';
+                        this.newPassword = '';
+                        this.confirmPassword = '';
+                        setTimeout(() => this.passSuccess = false, 3000);
+                    } else {
+                        this.passError = res.message;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
