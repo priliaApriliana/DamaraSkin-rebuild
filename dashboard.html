@@ -378,7 +378,23 @@
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Skeleton Loader Grid -->
+                <div x-show="loading" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <template x-for="i in [1, 2, 3]">
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] flex flex-col h-full animate-pulse">
+                            <div class="relative pt-[56.25%] bg-gray-200"></div>
+                            <div class="p-5 flex-grow flex flex-col space-y-4">
+                                <div class="h-3 bg-gray-200 rounded w-1/4"></div>
+                                <div class="h-5 bg-gray-200 rounded w-3/4"></div>
+                                <div class="h-10 bg-gray-200 rounded w-full"></div>
+                                <div class="h-3 bg-gray-200 rounded w-1/3 mt-auto self-end"></div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Articles Grid -->
+                <div x-show="!loading" class="grid grid-cols-1 md:grid-cols-3 gap-8" x-cloak>
                     <template x-for="article in articles" :key="article.id">
                         <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(245,128,157,0.12)] hover:-translate-y-1.5 transform transition-all duration-500 flex flex-col h-full group">
                             <div class="relative pt-[56.25%] overflow-hidden bg-gray-100">
@@ -418,6 +434,7 @@
                 articles: [],
                 tip: '',
                 alertSuccess: '',
+                loading: true,
                 
                 // Form model properties
                 skin_type: 'normal',
@@ -426,7 +443,7 @@
                 sensitivity: 'normal',
                 water_intake: 'cukup',
 
-                init() {
+                async init() {
                     this.user = window.db.getCurrentUser();
                     if (!this.user) {
                         window.location.href = '/login.html';
@@ -435,7 +452,13 @@
                     this.hasFilledQuestionnaire = !!this.user.skin_type;
                     this.loadRecommendations();
                     this.loadTipOfTheDay();
-                    this.articles = window.db.getArticles().slice(0, 3);
+                    try {
+                        this.articles = (await window.db.getArticles()).slice(0, 3);
+                    } catch (e) {
+                        console.error(e);
+                    } finally {
+                        this.loading = false;
+                    }
                 },
                 loadTipOfTheDay() {
                     const tips = [

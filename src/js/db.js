@@ -918,60 +918,141 @@ export const db = {
   },
 
   // Articles
-  getArticles() {
-    // TODO: Untuk integrasi WordPress REST API, ganti fungsi ini dengan:
-    // const response = await fetch('https://your-wordpress-site.com/wp-json/wp/v2/posts?_embed');
-    // const posts = await response.json();
-    // return posts.map(post => ({
-    //   id: post.id,
-    //   title: post.title.rendered,
-    //   excerpt: post.excerpt.rendered,
-    //   content: post.content.rendered,
-    //   thumbnail: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
-    //   date: post.date,
-    //   slug: post.slug
-    // }));
-    // Saat ini menggunakan static data dari localStorage sebagai fallback.
-    let raw = [];
+  async getArticles() {
+  const localWpUrl = 'http://localhost/workshop_desainUI/wordpress/wp-json/wp/v2/posts?_embed&categories=4&per_page=20';
+  const liveWpUrl = 'https://damaraskin.wordpress.com/wp-json/wp/v2/posts?_embed&categories=4&per_page=20';
+    let wpArticles = [];
+    let fetchSuccess = false;
+
+    // 1. Try local WordPress first (Laragon) with 3.0s timeout
     try {
-      raw = JSON.parse(localStorage.getItem("damaraskin_articles") || "[]");
-    } catch (e) {}
-    if (!raw || raw.length === 0) {
-      raw = SEED_ARTICLES;
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), 3000);
+      const response = await fetch(localWpUrl, { signal: controller.signal });
+      clearTimeout(id);
+      if (response.ok) {
+        const posts = await response.json();
+        if (Array.isArray(posts) && posts.length > 0) {
+          wpArticles = this.mapWordPressPosts(posts);
+          fetchSuccess = true;
+        }
+      }
+    } catch (e) {
+      console.warn("Local WordPress REST API not reachable, trying live...", e);
     }
-    return raw.map(art => {
-      const normalized = { ...art };
-      if (normalized.title && typeof normalized.title === "string") {
-        normalized.title = { rendered: normalized.title };
+
+    // 2. Try live WordPress if local failed with 2.0s timeout
+    if (!fetchSuccess) {
+      try {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), 2000);
+        const response = await fetch(liveWpUrl, { signal: controller.signal });
+        clearTimeout(id);
+        if (response.ok) {
+          const posts = await response.json();
+          if (Array.isArray(posts) && posts.length > 0) {
+            wpArticles = this.mapWordPressPosts(posts);
+            fetchSuccess = true;
+          }
+        }
+      } catch (e) {
+        console.warn("Live WordPress REST API failed, using LocalStorage only...", e);
       }
-      if (normalized.excerpt && typeof normalized.excerpt === "string") {
-        normalized.excerpt = { rendered: normalized.excerpt };
+    }
+
+    // 3. Load LocalStorage articles (created/edited by admin)
+    let localArticles = [];
+    try {
+      const raw = localStorage.getItem("damaraskin_articles");
+      if (raw) {
+        localArticles = JSON.parse(raw);
+      } else {
+        localArticles = SEED_ARTICLES;
       }
-      if (normalized.content && typeof normalized.content === "string") {
-        normalized.content = { rendered: normalized.content };
+    } catch (e) {
+      localArticles = SEED_ARTICLES;
+    }
+
+    // Normalize local articles to match WP structures
+    const normalizedLocal = localArticles.map(art => this.normalizeArticle(art));
+
+    // Combine local custom articles and WordPress articles.
+    const combined = [...normalizedLocal];
+    wpArticles.forEach(wpArt => {
+      const isDuplicate = combined.some(localArt => localArt.slug === wpArt.slug);
+      if (!isDuplicate) {
+        combined.unshift(wpArt);
       }
-      if (!normalized.jetpack_featured_media_url && normalized.thumbnail) {
-        normalized.jetpack_featured_media_url = normalized.thumbnail;
+    });
+
+    return combined;
+  },
+
+  mapWordPressPosts(posts) {
+    return posts.map(post => {
+      let thumbnail = '';
+      if (post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0]) {
+        thumbnail = post._embedded['wp:featuredmedia'][0].source_url;
+      } else if (post.jetpack_featured_media_url) {
+        thumbnail = post.jetpack_featured_media_url;
+      } else {
+        thumbnail = '/images/articles/default.png';
       }
-      return normalized;
+      return {
+        id: post.id,
+        title: { rendered: post.title ? post.title.rendered : '' },
+        excerpt: { rendered: post.excerpt ? post.excerpt.rendered : '' },
+        content: { rendered: post.content ? post.content.rendered : '' },
+        thumbnail: thumbnail,
+        jetpack_featured_media_url: thumbnail,
+        date: post.date || new Date().toISOString(),
+        slug: post.slug || '',
+        category: 'Skincare Tips',
+        author: 'Damara Beauty',
+        read_time: '5 menit'
+      };
     });
   },
-  getArticleBySlug(slug) {
-    return this.getArticles().find(a => a.slug === slug);
+
+  normalizeArticle(art) {
+    const normalized = { ...art };
+    if (normalized.title && typeof normalized.title === "string") {
+      normalized.title = { rendered: normalized.title };
+    }
+    if (normalized.excerpt && typeof normalized.excerpt === "string") {
+      normalized.excerpt = { rendered: normalized.excerpt };
+    }
+    if (normalized.content && typeof normalized.content === "string") {
+      normalized.content = { rendered: normalized.content };
+    }
+    if (!normalized.jetpack_featured_media_url && normalized.thumbnail) {
+      normalized.jetpack_featured_media_url = normalized.thumbnail;
+    }
+    return normalized;
   },
+
+  async getArticleBySlug(slug) {
+    const articles = await this.getArticles();
+    return articles.find(a => a.slug === slug);
+  },
+
   saveArticles(articles) {
     localStorage.setItem("damaraskin_articles", JSON.stringify(articles));
   },
-  getArticleById(id) {
-    return this.getArticles().find(a => String(a.id) === String(id));
+
+  async getArticleById(id) {
+    const articles = await this.getArticles();
+    return articles.find(a => String(a.id) === String(id));
   },
-  saveArticle(articleData) {
-    const articles = this.getArticles();
+
+  async saveArticle(articleData) {
+    const articles = await this.getArticles();
     if (articleData.id) {
       const idx = articles.findIndex(a => String(a.id) === String(articleData.id));
       if (idx !== -1) {
         articles[idx] = { ...articles[idx], ...articleData, id: String(articleData.id) };
-        this.saveArticles(articles);
+        const onlyLocal = articles.filter(a => typeof a.id === 'string' && a.id.startsWith('art_'));
+        this.saveArticles(onlyLocal);
         return articles[idx];
       }
     } else {
@@ -985,15 +1066,24 @@ export const db = {
         content: typeof articleData.content === 'string' ? { rendered: articleData.content } : articleData.content
       };
       articles.push(newArticle);
-      this.saveArticles(articles);
+      const onlyLocal = articles.filter(a => typeof a.id === 'string' && a.id.startsWith('art_'));
+      this.saveArticles(onlyLocal);
       return newArticle;
     }
     return null;
   },
-  deleteArticle(id) {
-    let articles = this.getArticles();
-    articles = articles.filter(a => String(a.id) !== String(id));
-    this.saveArticles(articles);
+
+  async deleteArticle(id) {
+    let localArticles = [];
+    try {
+      const raw = localStorage.getItem("damaraskin_articles");
+      if (raw) localArticles = JSON.parse(raw);
+      else localArticles = [...SEED_ARTICLES];
+    } catch (e) {
+      localArticles = [...SEED_ARTICLES];
+    }
+    localArticles = localArticles.filter(a => String(a.id) !== String(id));
+    this.saveArticles(localArticles);
     return true;
   }
 };

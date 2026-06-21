@@ -20,6 +20,7 @@ export default defineConfig({
                 orders: resolve(__dirname, 'orders.html'),
                 'order-detail': resolve(__dirname, 'order-detail.html'),
                 'order-success': resolve(__dirname, 'order-success.html'),
+                'transaction-history': resolve(__dirname, 'transaction-history.html'),
                 profile: resolve(__dirname, 'profile.html'),
                 login: resolve(__dirname, 'login.html'),
                 register: resolve(__dirname, 'register.html'),

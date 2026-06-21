@@ -33,8 +33,8 @@
                 </ol>
             </nav>
 
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight leading-none">
-                Tips & Edukasi Skincare
+            <h1 class="text-3xl sm:text-4xl font-normal text-gray-900 tracking-tight leading-none">
+                Tips &amp; <span class="italic text-primary font-medium">Edukasi Skincare</span>
             </h1>
             <p class="text-sm text-gray-505 mt-2">Ketahui jenis kulit Anda secara ilmiah, baca riset bahan aktif skincare, dan pelajari cara terbaik mendapatkan kulit impian Anda.</p>
         </div>
@@ -44,11 +44,26 @@
     <div class="py-12 bg-white" x-data="articlesPage()">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div x-show="articles.length === 0" class="text-center py-16 bg-[#FFF9FA] rounded-3xl border border-primary/5 max-w-xl mx-auto" x-cloak>
+            <!-- Skeleton Loader Grid -->
+            <div x-show="loading" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <template x-for="i in [1, 2, 3, 4, 5, 6]">
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] flex flex-col h-full animate-pulse">
+                        <div class="relative pt-[56.25%] bg-gray-200"></div>
+                        <div class="p-5 flex-grow flex flex-col space-y-4">
+                            <div class="h-3 bg-gray-200 rounded w-1/4"></div>
+                            <div class="h-5 bg-gray-200 rounded w-3/4"></div>
+                            <div class="h-10 bg-gray-200 rounded w-full"></div>
+                            <div class="h-3 bg-gray-200 rounded w-1/3 mt-auto self-end"></div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div x-show="!loading && articles.length === 0" class="text-center py-16 bg-[#FFF9FA] rounded-3xl border border-primary/5 max-w-xl mx-auto" x-cloak>
                 <p class="text-sm text-gray-500 italic">Saat ini belum ada artikel kecantikan yang dapat ditampilkan.</p>
             </div>
 
-            <div x-show="articles.length > 0" x-cloak>
+            <div x-show="!loading && articles.length > 0" x-cloak>
                 <!-- Grid of Articles -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                     <template x-for="article in articles" :key="article.id">
@@ -70,9 +85,9 @@
 
                                 <h3 class="text-gray-800 font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-200 leading-snug" x-html="article.title.rendered"></h3>
 
-                                <p class="text-xs text-gray-505 line-clamp-3 mb-5 leading-relaxed flex-grow" x-text="article.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...'"></p>
+                                <p class="text-xs text-gray-555 line-clamp-3 mb-5 leading-relaxed flex-grow" x-text="article.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...'"></p>
 
-                                <div class="mt-auto pt-3 border-t border-gray-50 flex justify-end">
+                                <div class="mt-auto pt-3 border-t border-gray-55 flex justify-end">
                                     <a :href="'/article-detail.html?slug=' + article.slug" class="inline-flex items-center text-xs font-semibold text-primary group-hover:text-accent transition duration-200">
                                         <span>Baca Selengkapnya</span>
                                         <svg class="h-3.5 w-3.5 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
@@ -93,8 +108,15 @@
         function articlesPage() {
             return {
                 articles: [],
-                init() {
-                    this.articles = window.db.getArticles();
+                loading: true,
+                async init() {
+                    try {
+                        this.articles = await window.db.getArticles();
+                    } catch (e) {
+                        console.error(e);
+                    } finally {
+                        this.loading = false;
+                    }
                 }
             }
         }

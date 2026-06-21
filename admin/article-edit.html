@@ -97,31 +97,36 @@
                 excerpt: '',
                 image_url: '',
                 content: '',
-                init() {
+                async init() {
                     const params = new URLSearchParams(window.location.search);
                     const id = params.get('id');
                     if (!id) {
                         window.location.href = '/admin/articles.html';
                         return;
                     }
-                    this.article = window.db.getArticleById(id);
-                    if (!this.article) {
-                        window.location.href = '/admin/articles.html';
-                        return;
-                    }
+                    try {
+                        this.article = await window.db.getArticleById(id);
+                        if (!this.article) {
+                            window.location.href = '/admin/articles.html';
+                            return;
+                        }
 
-                    this.title = this.article.title.rendered;
-                    this.slug = this.article.slug;
-                    this.excerpt = this.article.excerpt.rendered;
-                    this.image_url = this.article.jetpack_featured_media_url;
-                    this.content = this.article.content.rendered;
+                        this.title = this.article.title.rendered;
+                        this.slug = this.article.slug;
+                        this.excerpt = this.article.excerpt.rendered;
+                        this.image_url = this.article.jetpack_featured_media_url;
+                        this.content = this.article.content.rendered;
+                    } catch (e) {
+                        console.error(e);
+                        window.location.href = '/admin/articles.html';
+                    }
                 },
                 generateSlug() {
                     this.slug = this.title.toLowerCase()
                         .replace(/[^\w ]+/g, '')
                         .replace(/ +/g, '-');
                 },
-                submitArticle() {
+                async submitArticle() {
                     const articleData = {
                         id: this.article.id,
                         title: { rendered: this.title },
@@ -132,9 +137,14 @@
                         date: this.article.date
                     };
 
-                    const saved = window.db.saveArticle(articleData);
-                    if (saved) {
-                        window.location.href = '/admin/articles.html';
+                    try {
+                        const saved = await window.db.saveArticle(articleData);
+                        if (saved) {
+                            window.location.href = '/admin/articles.html';
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        alert("Gagal memperbarui artikel.");
                     }
                 }
             }

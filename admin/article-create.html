@@ -99,7 +99,7 @@
                         .replace(/[^\w ]+/g, '')
                         .replace(/ +/g, '-');
                 },
-                submitArticle() {
+                async submitArticle() {
                     const articleData = {
                         title: { rendered: this.title },
                         slug: this.slug,
@@ -108,9 +108,14 @@
                         content: { rendered: this.content }
                     };
 
-                    const saved = window.db.saveArticle(articleData);
-                    if (saved) {
-                        window.location.href = '/admin/articles.html';
+                    try {
+                        const saved = await window.db.saveArticle(articleData);
+                        if (saved) {
+                            window.location.href = '/admin/articles.html';
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        alert("Gagal menyimpan artikel.");
                     }
                 }
             }

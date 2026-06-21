@@ -68,8 +68,19 @@
                 </ol>
             </nav>
 
+            <!-- Loading Indicator -->
+            <div x-show="loading" class="text-center py-12 animate-pulse">
+                <div class="h-8 bg-gray-200 rounded w-2/3 mx-auto mb-8"></div>
+                <div class="h-64 bg-gray-200 rounded-3xl w-full mb-8"></div>
+                <div class="space-y-4 max-w-xl mx-auto">
+                    <div class="h-4 bg-gray-200 rounded w-full"></div>
+                    <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+                    <div class="h-4 bg-gray-200 rounded w-4/5"></div>
+                </div>
+            </div>
+
             <template x-if="article">
-                <article class="max-w-3xl mx-auto">
+                <article x-show="!loading" class="max-w-3xl mx-auto" x-cloak>
                     <!-- Meta info -->
                     <div class="flex items-center space-x-2 text-xs text-gray-400 mb-4 uppercase tracking-wider font-bold">
                         <span class="text-primary">Skincare Tips</span>
@@ -108,20 +119,27 @@
         function articleDetailPage() {
             return {
                 article: null,
-                init() {
+                loading: true,
+                async init() {
                     const params = new URLSearchParams(window.location.search);
                     const slug = params.get('slug');
                     if (!slug) {
                         window.location.href = '/articles.html';
                         return;
                     }
-                    this.article = window.db.getArticleBySlug(slug);
-                    if (!this.article) {
+                    try {
+                        this.article = await window.db.getArticleBySlug(slug);
+                        if (!this.article) {
+                            window.location.href = '/articles.html';
+                            return;
+                        }
+                        document.title = this.article.title.rendered + ' - DamaraSkin';
+                    } catch (e) {
+                        console.error(e);
                         window.location.href = '/articles.html';
-                        return;
+                    } finally {
+                        this.loading = false;
                     }
-                    // Update document title dynamically
-                    document.title = this.article.title.rendered + ' - DamaraSkin';
                 }
             }
         }
