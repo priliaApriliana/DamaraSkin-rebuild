@@ -314,45 +314,6 @@ const SEED_REVIEWS = [
 
 const SEED_ARTICLES = [
   {
-    id: "art_wp_001",
-    title: "Cara Memilih Moisturizer untuk Kulit Berminyak",
-    slug: "cara-memilih-moisturizer-untuk-kulit-berminyak",
-    excerpt: "Kulit berminyak bukan berarti tidak butuh pelembap. Justru, melewatkan moisturizer bisa membuat kulit memproduksi lebih banyak minyak sebagai kompensasi. Kuncinya adalah memilih formula yang tepat.",
-    content: "<p>Kulit berminyak bukan berarti tidak butuh pelembap. Justru, melewatkan moisturizer bisa membuat kulit memproduksi lebih banyak minyak sebagai kompensasi. Kuncinya adalah memilih formula yang tepat.</p><h2>Pilih Tekstur yang Ringan</h2><p>Untuk kulit berminyak, hindari moisturizer berbentuk krim kental atau berbahan dasar minyak. Pilihan terbaik adalah gel moisturizer, water-based lotion, atau emulsion yang teksturnya sangat ringan di kulit.</p><h2>Bahan Aktif yang Direkomendasikan</h2><ul><li><strong>Niacinamide</strong> — mengontrol produksi sebum sekaligus mencerahkan kulit</li><li><strong>Hyaluronic Acid</strong> — menghidrasi tanpa menambah minyak</li><li><strong>Centella Asiatica</strong> — menenangkan kulit yang mudah meradang</li><li><strong>Zinc</strong> — membantu mengontrol minyak berlebih</li></ul><h2>Hindari Bahan Ini</h2><ul><li>Petrolatum dan mineral oil — terlalu oklusif dan bisa menyumbat pori</li><li>Alkohol konsentrasi tinggi — memicu produksi minyak berlebih</li><li>Fragrance — berpotensi memicu iritasi</li></ul><p>Dengan memilih moisturizer yang tepat, kulit berminyak bisa terhidrasi dengan baik tanpa terlihat mengilap berlebihan sepanjang hari.</p>",
-    thumbnail: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80",
-    jetpack_featured_media_url: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80",
-    category: "Skincare Tips",
-    author: "Damara Beauty",
-    date: "2026-06-21",
-    read_time: "5 menit"
-  },
-  {
-    id: "art_wp_002",
-    title: "Manfaat Niacinamide untuk Kulit Kusam",
-    slug: "manfaat-niacinamide-untuk-kulit-kusam",
-    excerpt: "Niacinamide, atau yang dikenal sebagai Vitamin B3, adalah salah satu bahan aktif paling serbaguna dalam dunia skincare yang cocok untuk hampir semua jenis kulit.",
-    content: "<p>Niacinamide, atau yang dikenal sebagai Vitamin B3, adalah bahan serbaguna dalam dunia kecantikan yang sangat disukai karena bekerja dengan lembut tanpa menyebabkan iritasi.</p><h2>Manfaat Utama untuk Kulit Kusam</h2><ul><li><strong>Menghambat Transfer Melanin</strong> — membantu kulit tampak lebih cerah secara merata</li><li><strong>Memperkuat Skin Barrier</strong> — meningkatkan produksi ceramide agar kulit lebih sehat bercahaya</li><li><strong>Mengurangi Tampilan Pori-Pori</strong> — mengontrol produksi sebum dan meningkatkan elastisitas kulit</li><li><strong>Anti-Inflamasi</strong> — menenangkan kemerahan dan meratakan warna kulit</li></ul><h2>Konsentrasi yang Efektif</h2><p>Niacinamide efektif pada konsentrasi 2-10%. Untuk pemula, mulai dari 2-5%. Konsentrasi 10% cocok untuk mengatasi hiperpigmentasi yang lebih dalam.</p><h2>Cara Menggunakan</h2><p>Gunakan setelah toner dan sebelum moisturizer. Bisa dipakai pagi dan malam hari. Dengan konsistensi 4-8 minggu, perbedaan kecerahan kulit akan mulai terlihat.</p>",
-    thumbnail: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
-    jetpack_featured_media_url: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
-    category: "Skincare Tips",
-    author: "Damara Beauty",
-    date: "2026-06-21",
-    read_time: "5 menit"
-  },
-  {
-    id: "art_wp_003",
-    title: "Rutinitas Skincare Pagi yang Tepat untuk Kulit Sehat Sepanjang Hari",
-    slug: "rutinitas-skincare-pagi-yang-tepat-untuk-kulit-sehat-sepanjang-hari",
-    excerpt: "Rutinitas skincare pagi yang tepat bukan hanya soal kecantikan — ini adalah investasi kesehatan kulit jangka panjang yang memastikan kulit terlindungi sepanjang hari.",
-    content: "<p>Rutinitas skincare pagi berfokus pada perlindungan, sementara malam hari berfokus pada perbaikan. Di pagi hari, kulit perlu dipersiapkan untuk menghadapi sinar UV, polusi, dan stres oksidatif.</p><h2>Urutan Skincare Pagi yang Benar</h2><ol><li><strong>Cleanser</strong> — mulai dengan gentle cleanser berbahan dasar air</li><li><strong>Toner</strong> — menyeimbangkan pH kulit dan mempersiapkan kulit menyerap produk berikutnya</li><li><strong>Serum</strong> — gunakan serum antioksidan seperti Vitamin C untuk melawan radikal bebas</li><li><strong>Eye Cream</strong> (opsional) — aplikasikan dengan gerakan menepuk lembut</li><li><strong>Moisturizer</strong> — pilih tekstur sesuai jenis kulit</li><li><strong>Sunscreen</strong> — wajib SPF minimal 30, langkah terakhir sebelum makeup</li></ol><h2>Tips Tambahan</h2><ul><li>Tunggu 1-2 menit antara setiap langkah</li><li>Aplikasikan dari tekstur paling tipis ke paling tebal</li><li>Reapply sunscreen setiap 2 jam saat di luar ruangan</li></ul><p>Dengan rutinitas pagi yang tepat dan konsisten, kulit akan terasa lebih sehat, terlindungi, dan bercahaya sepanjang hari.</p>",
-    thumbnail: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=600&q=80",
-    jetpack_featured_media_url: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=600&q=80",
-    category: "Skincare Tips",
-    author: "Damara Beauty",
-    date: "2026-06-21",
-    read_time: "5 menit"
-  },
-  {
     id: "art_001",
     title: "5 Langkah Skincare Rutin untuk Kulit Kering",
     slug: "5-langkah-skincare-rutin-untuk-kulit-kering",
@@ -507,7 +468,6 @@ const SEED_ORDERS = [
 
 function initDB() {
   localStorage.removeItem("damaraskin_db_initialized");
-  localStorage.removeItem("damaraskin_articles");
   try {
     const users = localStorage.getItem("damaraskin_users");
     if (!users || JSON.parse(users).length === 0) {
@@ -689,7 +649,16 @@ export const db = {
   getProducts() {
     try {
       const data = JSON.parse(localStorage.getItem("damaraskin_products") || "[]");
-      return (data && data.length > 0) ? data : SEED_PRODUCTS;
+      const list = (data && data.length > 0) ? data : SEED_PRODUCTS;
+      return list.map(p => {
+        if (p.image && !p.image.startsWith("/") && !p.image.startsWith("http")) {
+          p.image = "/" + p.image;
+        }
+        if (p.images) {
+          p.images = p.images.map(img => (img.startsWith("/") || img.startsWith("http")) ? img : "/" + img);
+        }
+        return p;
+      });
     } catch (e) {
       return SEED_PRODUCTS;
     }
@@ -959,17 +928,26 @@ export const db = {
 
   // Articles
   async getArticles() {
-  const localWpUrl = 'http://localhost/workshop_desainUI/wordpress/wp-json/wp/v2/posts?_embed&categories=4&per_page=20';
-  const liveWpUrl = 'https://damaraskin.wordpress.com/wp-json/wp/v2/posts?_embed&categories=4&per_page=20';
+    const staticWpUrl = '/articles-wp.json';
+    const fallbackWpUrl = '/public/articles-wp.json';
     let wpArticles = [];
     let fetchSuccess = false;
 
-    // 1. Try local WordPress first (Laragon) with 3.0s timeout
+    // Fetch static WordPress articles from the pre-downloaded JSON file
     try {
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), 3000);
-      const response = await fetch(localWpUrl, { signal: controller.signal });
+      let response = await fetch(staticWpUrl, { signal: controller.signal });
       clearTimeout(id);
+      
+      if (!response.ok) {
+        // Try fallback for Live Server (which doesn't map public folder to root)
+        const controller2 = new AbortController();
+        const id2 = setTimeout(() => controller2.abort(), 3000);
+        response = await fetch(fallbackWpUrl, { signal: controller2.signal });
+        clearTimeout(id2);
+      }
+
       if (response.ok) {
         const posts = await response.json();
         if (Array.isArray(posts) && posts.length > 0) {
@@ -978,26 +956,7 @@ export const db = {
         }
       }
     } catch (e) {
-      console.warn("Local WordPress REST API not reachable, trying live...", e);
-    }
-
-    // 2. Try live WordPress if local failed with 2.0s timeout
-    if (!fetchSuccess) {
-      try {
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), 2000);
-        const response = await fetch(liveWpUrl, { signal: controller.signal });
-        clearTimeout(id);
-        if (response.ok) {
-          const posts = await response.json();
-          if (Array.isArray(posts) && posts.length > 0) {
-            wpArticles = this.mapWordPressPosts(posts);
-            fetchSuccess = true;
-          }
-        }
-      } catch (e) {
-        console.warn("Live WordPress REST API failed, using LocalStorage only...", e);
-      }
+      console.warn("Failed to fetch static WordPress articles JSON, falling back...", e);
     }
 
     // 3. Load LocalStorage articles (created/edited by admin)

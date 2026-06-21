@@ -25,14 +25,14 @@ const navbarHTML = `
                     <a href="/index.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
                         Home
                     </a>
-                    <a href="/products.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
+                    <a href="/pages/products/products.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-550 hover:text-primary hover:border-primary-light">
                         Katalog Produk
                     </a>
-                    <a href="/articles.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
+                    <a href="/pages/articles/articles.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-550 hover:text-primary hover:border-primary-light">
                         Tips & Artikel
                     </a>
                     <template x-if="currentUser && currentUser.role === 'user'">
-                        <a href="/dashboard.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
+                        <a href="/pages/dashboard/dashboard.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
                             Skin Consultation
                         </a>
                     </template>
@@ -44,8 +44,8 @@ const navbarHTML = `
                 <!-- Guest View -->
                 <template x-if="!currentUser">
                     <div class="flex items-center space-x-4">
-                        <a href="/login.html" class="text-sm font-medium text-gray-500 hover:text-primary transition duration-300">Login</a>
-                        <a href="/register.html" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-accent rounded-full transition duration-300 shadow-md shadow-primary/20 hover:scale-105 transform">
+                        <a href="/pages/auth/login.html" class="text-sm font-medium text-gray-500 hover:text-primary transition duration-300">Login</a>
+                        <a href="/pages/auth/register.html" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-accent rounded-full transition duration-300 shadow-md shadow-primary/20 hover:scale-105 transform">
                             Daftar
                         </a>
                     </div>
@@ -56,7 +56,7 @@ const navbarHTML = `
                     <div class="flex items-center space-x-4">
                         <!-- Cart Icon for Regular Users -->
                         <template x-if="currentUser.role === 'user'">
-                            <a href="/cart.html" class="relative p-2 text-gray-500 hover:text-primary hover:bg-primary/5 rounded-full transition duration-300">
+                            <a href="/pages/cart/cart.html" class="relative p-2 text-gray-500 hover:text-primary hover:bg-primary/5 rounded-full transition duration-300">
                                 <span class="sr-only">Keranjang</span>
                                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
@@ -84,13 +84,13 @@ const navbarHTML = `
                                 </template>
                                 <template x-if="currentUser.role === 'user'">
                                     <div>
-                                        <a href="/dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition duration-200">
+                                        <a href="/pages/dashboard/dashboard.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition duration-200">
                                             Dashboard
                                         </a>
-                                        <a href="/profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition duration-200">
+                                        <a href="/pages/profile/profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition duration-200">
                                             Profil Saya
                                         </a>
-                                        <a href="/orders.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition duration-200">
+                                        <a href="/pages/orders/orders.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition duration-200">
                                             Riwayat Transaksi
                                         </a>
                                     </div>
@@ -117,17 +117,17 @@ const navbarHTML = `
                 <!-- Mobile Menu Dropdown -->
                 <div x-show="mobileOpen" x-transition class="absolute top-16 left-0 w-full bg-white border-b border-primary/10 shadow-lg p-4 z-50 flex flex-col space-y-3 sm:hidden" @click.away="mobileOpen = false">
                     <a href="/index.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Home</a>
-                    <a href="/products.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Katalog Produk</a>
-                    <a href="/articles.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Tips & Artikel</a>
+                    <a href="/pages/products/products.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Katalog Produk</a>
+                    <a href="/pages/articles/articles.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Tips & Artikel</a>
                     
                     <template x-if="currentUser && currentUser.role === 'user'">
                         <div>
-                            <a href="/dashboard.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Skin Consultation</a>
-                            <a href="/cart.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">
+                            <a href="/pages/dashboard/dashboard.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Skin Consultation</a>
+                            <a href="/pages/cart/cart.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">
                                 Keranjang (<span x-text="cartCount"></span>)
                             </a>
-                            <a href="/profile.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Profil Saya</a>
-                            <a href="/orders.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Riwayat Transaksi</a>
+                            <a href="/pages/profile/profile.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Profil Saya</a>
+                            <a href="/pages/orders/orders.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Riwayat Transaksi</a>
                         </div>
                     </template>
 
@@ -146,8 +146,8 @@ const navbarHTML = `
 
                     <template x-if="!currentUser">
                         <div>
-                            <a href="/login.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Login</a>
-                            <a href="/register.html" class="block text-center px-3 py-2 rounded-xl text-base font-medium text-white bg-primary hover:bg-accent transition shadow-md shadow-primary/20">Daftar</a>
+                            <a href="/pages/auth/login.html" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition">Login</a>
+                            <a href="/pages/auth/register.html" class="block text-center px-3 py-2 rounded-xl text-base font-medium text-white bg-primary hover:bg-accent transition shadow-md shadow-primary/20">Daftar</a>
                         </div>
                     </template>
                 </div>
@@ -186,10 +186,10 @@ const footerHTML = `
                 </h3>
                 <ul class="mt-4 space-y-2">
                     <li><a href="/index.html" class="text-sm text-gray-500 hover:text-primary transition duration-200">Home</a></li>
-                    <li><a href="/products.html" class="text-sm text-gray-500 hover:text-primary transition duration-200">Katalog Produk</a></li>
-                    <li><a href="/articles.html" class="text-sm text-gray-500 hover:text-primary transition duration-200">Tips & Artikel</a></li>
+                    <li><a href="/pages/products/products.html" class="text-sm text-gray-500 hover:text-primary transition duration-200">Katalog Produk</a></li>
+                    <li><a href="/pages/articles/articles.html" class="text-sm text-gray-500 hover:text-primary transition duration-200">Tips & Artikel</a></li>
                     <template x-if="currentUser && currentUser.role === 'user'">
-                        <li><a href="/dashboard.html" class="text-sm text-gray-500 hover:text-primary transition duration-200">Skin Consultation</a></li>
+                        <li><a href="/pages/dashboard/dashboard.html" class="text-sm text-gray-500 hover:text-primary transition duration-200">Skin Consultation</a></li>
                     </template>
                 </ul>
             </div>
@@ -440,29 +440,29 @@ if (pathname.startsWith("/admin/")) {
 }
 
 // Route Protection (Route Guards)
-const guestOnlyPages = ["/login", "/register", "/login.html", "/register.html"];
+const guestOnlyPages = ["/login", "/register", "/pages/auth/login.html", "/pages/auth/register.html"];
 const adminPages = [
   "/admin/dashboard", "/admin/products", "/admin/product-create", "/admin/product-edit", "/admin/orders", "/admin/order-detail", "/admin/users", "/admin/dashboard.html", "/admin/products.html", "/admin/product-create.html", "/admin/product-edit.html", "/admin/orders.html", "/admin/order-detail.html", "/admin/users.html",
   "/admin/articles", "/admin/article-create", "/admin/article-edit", "/admin/articles.html", "/admin/article-create.html", "/admin/article-edit.html", "/admin/profile", "/admin/profile.html"
 ];
-const userOnlyPages = ["/dashboard", "/cart", "/checkout", "/orders", "/order-detail", "/order-success", "/profile", "/dashboard.html", "/cart.html", "/checkout.html", "/orders.html", "/order-detail.html", "/order-success.html", "/profile.html"];
+const userOnlyPages = ["/dashboard", "/cart", "/checkout", "/orders", "/order-detail", "/order-success", "/profile", "/pages/dashboard/dashboard.html", "/pages/cart/cart.html", "/pages/checkout/checkout.html", "/pages/orders/orders.html", "/pages/orders/order-detail.html", "/pages/orders/order-success.html", "/pages/orders/transaction-history.html", "/pages/profile/profile.html"];
 
 const currentUser = db.getCurrentUser();
 
 if (pathname.startsWith("/admin/") || adminPages.includes(pathname)) {
   if (!currentUser || currentUser.role !== "admin") {
-    window.location.href = "/login.html";
+    window.location.href = "/pages/auth/login.html";
   }
 } else if (userOnlyPages.some(page => pathname === page || pathname.startsWith(page))) {
   if (!currentUser || currentUser.role !== "user") {
-    window.location.href = "/login.html";
+    window.location.href = "/pages/auth/login.html";
   }
 } else if (guestOnlyPages.includes(pathname)) {
   if (currentUser) {
     if (currentUser.role === "admin") {
       window.location.href = "/admin/dashboard.html";
     } else {
-      window.location.href = "/dashboard.html";
+      window.location.href = "/pages/dashboard/dashboard.html";
     }
   }
 }
@@ -482,18 +482,31 @@ Alpine.data('navbarComponent', () => ({
     this.currentUser = db.getCurrentUser();
     const cart = db.getCart();
     this.cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    this.$nextTick(() => {
+      const pathname = window.location.pathname;
+      document.querySelectorAll(".nav-link-item").forEach(link => {
+        const href = link.getAttribute("href");
+        if (href === pathname || (href !== "/" && pathname.startsWith(href))) {
+          link.classList.remove("border-transparent", "text-gray-500", "text-gray-550");
+          link.classList.add("border-primary", "text-dark-text");
+        } else {
+          link.classList.add("border-transparent");
+          link.classList.remove("border-primary", "text-dark-text");
+        }
+      });
+    });
   },
   logout() {
     db.logout();
     window.dispatchEvent(new Event('user-logged-in'));
-    window.location.href = "/login.html";
+    window.location.href = "/pages/auth/login.html";
   }
 }));
 
 Alpine.data('adminSidebarComponent', () => ({
   logout() {
     db.logout();
-    window.location.href = "/login.html";
+    window.location.href = "/pages/auth/login.html";
   }
 }));
 
