@@ -22,17 +22,17 @@ const navbarHTML = `
                 </div>
                 <!-- Navigation Links (Desktop) -->
                 <div class="hidden sm:ml-10 sm:flex sm:space-x-8">
-                    <a href="/index.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
+                    <a href="/index.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-400 hover:text-primary hover:border-primary-light">
                         Home
                     </a>
-                    <a href="/pages/products/products.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
+                    <a href="/pages/products/products.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-400 hover:text-primary hover:border-primary-light">
                         Katalog Produk
                     </a>
-                    <a href="/pages/articles/articles.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
+                    <a href="/pages/articles/articles.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-400 hover:text-primary hover:border-primary-light">
                         Tips & Artikel
                     </a>
                     <template x-if="currentUser && currentUser.role === 'user'">
-                        <a href="/pages/dashboard/dashboard.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
+                        <a href="/pages/dashboard/dashboard.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-400 hover:text-primary hover:border-primary-light">
                             Skin Consultation
                         </a>
                     </template>
@@ -417,9 +417,18 @@ const pathname = window.location.pathname;
 // Update active class on standard navbar links
 document.querySelectorAll(".nav-link-item").forEach(link => {
   const href = link.getAttribute("href");
-  if (href === pathname || (href !== "/" && pathname.startsWith(href))) {
-    link.classList.remove("border-transparent", "text-gray-500");
-    link.classList.add("border-primary", "text-dark-text");
+  
+  // Define active conditions for Home, Products, and Articles
+  const isHomeActive = (pathname === "/" || pathname === "/index.html" || pathname.endsWith("/index.html") || pathname.endsWith("/")) && href === "/index.html";
+  const isProductsActive = (pathname.includes("/pages/products/products.html") || pathname.includes("/pages/products/product-detail.html") || pathname.endsWith("/pages/products/products") || pathname.endsWith("/pages/products/product-detail")) && href === "/pages/products/products.html";
+  const isArticlesActive = (pathname.includes("/pages/articles/articles.html") || pathname.includes("/pages/articles/article-detail.html") || pathname.endsWith("/pages/articles/articles") || pathname.endsWith("/pages/articles/article-detail")) && href === "/pages/articles/articles.html";
+
+  if (isHomeActive || isProductsActive || isArticlesActive) {
+    link.classList.remove("border-transparent", "text-gray-400", "text-gray-500");
+    link.classList.add("border-primary", "text-primary");
+  } else {
+    link.classList.remove("border-primary", "text-primary", "text-dark-text");
+    link.classList.add("border-transparent", "text-gray-400");
   }
 });
 
