@@ -414,29 +414,6 @@ if (adminSidebarContainer) {
 // Active navigation links highlighting
 const pathname = window.location.pathname;
 
-// Update active class on standard navbar links
-document.querySelectorAll(".nav-link-item").forEach(link => {
-  const href = link.getAttribute("href");
-  
-  // Define active conditions for Home, Products, Articles, and Skin Consultation (Dashboard)
-  const isHomeActive = (pathname === "/" || pathname === "/index.html" || pathname.endsWith("/index.html") || pathname.endsWith("/")) && href === "/index.html";
-  const isProductsActive = (pathname.includes("/pages/products/products.html") || pathname.includes("/pages/products/product-detail.html") || pathname.endsWith("/pages/products/products") || pathname.endsWith("/pages/products/product-detail")) && href === "/pages/products/products.html";
-  const isArticlesActive = (pathname.includes("/pages/articles/articles.html") || pathname.includes("/pages/articles/article-detail.html") || pathname.endsWith("/pages/articles/articles") || pathname.endsWith("/pages/articles/article-detail")) && href === "/pages/articles/articles.html";
-  const isDashboardActive = (
-    pathname.includes("/pages/dashboard/dashboard.html") || pathname.endsWith("/pages/dashboard/dashboard") ||
-    pathname.includes("/pages/consultation/consultation.html") || pathname.endsWith("/pages/consultation/consultation") ||
-    pathname.includes("/pages/consultation/consultation-result.html") || pathname.endsWith("/pages/consultation/consultation-result")
-  ) && href === "/pages/dashboard/dashboard.html";
-
-  if (isHomeActive || isProductsActive || isArticlesActive || isDashboardActive) {
-    link.classList.remove("border-transparent", "text-gray-400", "text-gray-500");
-    link.classList.add("border-primary", "text-primary");
-  } else {
-    link.classList.remove("border-primary", "text-primary", "text-dark-text");
-    link.classList.add("border-transparent", "text-gray-400");
-  }
-});
-
 // Update active class on admin sidebar links
 if (pathname.startsWith("/admin/")) {
   const activeLinkClass = ["bg-primary", "text-white"];
@@ -511,12 +488,23 @@ Alpine.data('navbarComponent', () => ({
       const pathname = window.location.pathname;
       document.querySelectorAll(".nav-link-item").forEach(link => {
         const href = link.getAttribute("href");
-        if (href === pathname || (href !== "/" && pathname.startsWith(href))) {
-          link.classList.remove("border-transparent", "text-gray-500");
-          link.classList.add("border-primary", "text-dark-text");
+        
+        // Define active conditions for Home, Products, Articles, and Skin Consultation (Dashboard)
+        const isHomeActive = (pathname === "/" || pathname === "/index.html" || pathname.endsWith("/index.html") || pathname.endsWith("/")) && href === "/index.html";
+        const isProductsActive = (pathname.includes("/pages/products/products.html") || pathname.includes("/pages/products/product-detail.html") || pathname.endsWith("/pages/products/products") || pathname.endsWith("/pages/products/product-detail")) && href === "/pages/products/products.html";
+        const isArticlesActive = (pathname.includes("/pages/articles/articles.html") || pathname.includes("/pages/articles/article-detail.html") || pathname.endsWith("/pages/articles/articles") || pathname.endsWith("/pages/articles/article-detail")) && href === "/pages/articles/articles.html";
+        const isDashboardActive = (
+          pathname.includes("/pages/dashboard/dashboard.html") || pathname.endsWith("/pages/dashboard/dashboard") ||
+          pathname.includes("/pages/consultation/consultation.html") || pathname.endsWith("/pages/consultation/consultation") ||
+          pathname.includes("/pages/consultation/consultation-result.html") || pathname.endsWith("/pages/consultation/consultation-result")
+        ) && href === "/pages/dashboard/dashboard.html";
+
+        if (isHomeActive || isProductsActive || isArticlesActive || isDashboardActive) {
+          link.classList.remove("border-transparent", "text-gray-400", "text-gray-500");
+          link.classList.add("border-primary", "text-primary");
         } else {
-          link.classList.add("border-transparent");
-          link.classList.remove("border-primary", "text-dark-text");
+          link.classList.remove("border-primary", "text-primary", "text-dark-text");
+          link.classList.add("border-transparent", "text-gray-400");
         }
       });
     });
