@@ -69,7 +69,7 @@
                         <h2 class="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3 mb-6">Item yang Dipesan</h2>
                         
                         <div class="space-y-6">
-                            <template x-for="item in orderItems" :key="item.id">
+                            <template x-for="item in orderItems" :key="item.product_id">
                                 <div class="flex items-center flex-col sm:flex-row pb-6 border-b border-gray-100 last:border-0 last:pb-0 gap-4">
                                     <!-- Thumbnail -->
                                     <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm">

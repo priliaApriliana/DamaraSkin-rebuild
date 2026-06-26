@@ -50,7 +50,7 @@
                                     <div class="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)]">
                                         <h2 class="text-base font-bold text-gray-800 border-b border-gray-100 pb-3 mb-5">Daftar Produk</h2>
                                         <div class="space-y-5">
-                                            <template x-for="item in orderItems" :key="item.id">
+                                            <template x-for="item in orderItems" :key="item.product_id">
                                                 <div class="flex items-center justify-between pb-4 border-b border-gray-100 last:border-0 last:pb-0 gap-4">
                                                     <div class="h-12 w-12 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 flex-shrink-0 shadow-sm">
                                                         <img :src="item.product.images[0]" class="h-full w-full object-cover">

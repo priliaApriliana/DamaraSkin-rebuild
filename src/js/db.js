@@ -414,8 +414,8 @@ const SEED_ORDERS = [
     tracking_number: "DS-9081237198",
     created_at: "2026-06-12T01:28:00Z",
     items: [
-      { product_id: "prod_001", quantity: 1, qty: 1, price: 139000, name: "Skintific 5X Ceramide Barrier Moisture Gel" },
-      { product_id: "prod_003", quantity: 1, qty: 1, price: 45000, name: "Hada Labo Gokujyun Ultimate Moisturizing Lotion" }
+      { id: "item_seed_1", product_id: "prod_001", quantity: 1, qty: 1, price: 139000, name: "Skintific 5X Ceramide Barrier Moisture Gel" },
+      { id: "item_seed_2", product_id: "prod_003", quantity: 1, qty: 1, price: 45000, name: "Hada Labo Gokujyun Ultimate Moisturizing Lotion" }
     ]
   },
   {
@@ -438,7 +438,7 @@ const SEED_ORDERS = [
     tracking_number: "DS-9081237199",
     created_at: "2026-06-15T09:15:00Z",
     items: [
-      { product_id: "prod_002", quantity: 1, qty: 1, price: 198000, name: "Skin1004 Madagascar Centella Ampoule" }
+      { id: "item_seed_3", product_id: "prod_002", quantity: 1, qty: 1, price: 198000, name: "Skin1004 Madagascar Centella Ampoule" }
     ]
   },
   {
@@ -461,7 +461,7 @@ const SEED_ORDERS = [
     tracking_number: "",
     created_at: "2026-06-16T11:00:00Z",
     items: [
-      { product_id: "prod_005", quantity: 1, qty: 1, price: 125000, name: "COSRX Low pH Good Morning Gel Cleanser" }
+      { id: "item_seed_4", product_id: "prod_005", quantity: 1, qty: 1, price: 125000, name: "COSRX Low pH Good Morning Gel Cleanser" }
     ]
   }
 ];
@@ -858,6 +858,7 @@ export const db = {
         return { success: false, message: `Stok produk ${product ? product.name : 'tidak diketahui'} habis.` };
       }
       items.push({
+        id: "item_" + Date.now() + "_" + Math.floor(Math.random() * 10000),
         product_id: String(product.id),
         quantity: item.quantity,
         qty: item.quantity,
