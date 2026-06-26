@@ -422,7 +422,11 @@ document.querySelectorAll(".nav-link-item").forEach(link => {
   const isHomeActive = (pathname === "/" || pathname === "/index.html" || pathname.endsWith("/index.html") || pathname.endsWith("/")) && href === "/index.html";
   const isProductsActive = (pathname.includes("/pages/products/products.html") || pathname.includes("/pages/products/product-detail.html") || pathname.endsWith("/pages/products/products") || pathname.endsWith("/pages/products/product-detail")) && href === "/pages/products/products.html";
   const isArticlesActive = (pathname.includes("/pages/articles/articles.html") || pathname.includes("/pages/articles/article-detail.html") || pathname.endsWith("/pages/articles/articles") || pathname.endsWith("/pages/articles/article-detail")) && href === "/pages/articles/articles.html";
-  const isDashboardActive = (pathname.includes("/pages/dashboard/dashboard.html") || pathname.endsWith("/pages/dashboard/dashboard")) && href === "/pages/dashboard/dashboard.html";
+  const isDashboardActive = (
+    pathname.includes("/pages/dashboard/dashboard.html") || pathname.endsWith("/pages/dashboard/dashboard") ||
+    pathname.includes("/pages/consultation/consultation.html") || pathname.endsWith("/pages/consultation/consultation") ||
+    pathname.includes("/pages/consultation/consultation-result.html") || pathname.endsWith("/pages/consultation/consultation-result")
+  ) && href === "/pages/dashboard/dashboard.html";
 
   if (isHomeActive || isProductsActive || isArticlesActive || isDashboardActive) {
     link.classList.remove("border-transparent", "text-gray-400", "text-gray-500");
