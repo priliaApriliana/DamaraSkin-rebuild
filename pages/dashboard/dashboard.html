@@ -18,7 +18,7 @@
 
     <main class="flex-grow" x-data="dashboardPage()">
         <!-- Top Banner Section -->
-        <div class="bg-gradient-to-r from-[#FFF6F6] via-[#FFF1F3] to-[#FFF9FA] border-b border-primary/5 py-16 sm:py-20">
+        <div class="bg-gradient-to-r from-[#FFF6F6] via-[#FFF1F3] to-[#FFF9FA] border-b border-primary/5 py-16 lg:py-24 sm:py-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <!-- If NOT filled questionnaire -->
@@ -317,7 +317,7 @@
                     </div>
 
                     <template x-if="recommendedProducts.length === 0">
-                        <div class="text-center py-16 bg-[#FFF9FA] rounded-3xl border border-primary/5">
+                        <div class="text-center py-16 lg:py-24 bg-[#FFF9FA] rounded-3xl border border-primary/5">
                             <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             <h3 class="text-lg font-bold text-gray-800">Tidak Ada Produk yang Cocok</h3>
                             <p class="text-sm text-gray-500 mt-2 max-w-sm mx-auto">Kami tidak dapat menemukan produk yang sesuai dengan filter kulit Anda saat ini. Silakan coba atur ulang analisis kulit Anda.</p>
@@ -355,7 +355,7 @@
         </div>
 
         <!-- Featured Tip Section -->
-        <div class="py-16 bg-gradient-to-r from-[#FFF5F6] via-[#FFF9FB] to-[#FFF6F7] border-y border-primary/5">
+        <div class="py-16 lg:py-24 bg-gradient-to-r from-[#FFF5F6] via-[#FFF9FB] to-[#FFF6F7] border-y border-primary/5">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <span class="inline-flex items-center px-3.5 py-1 rounded-full text-[10px] font-bold bg-white text-primary border border-primary/10 shadow-sm uppercase tracking-wider mb-4">
                     💡 Skincare Tip of the Day
@@ -366,7 +366,7 @@
         </div>
 
         <!-- Latest Articles Blog Section -->
-        <div class="py-16 bg-white">
+        <div class="py-16 lg:py-24 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10">
                     <div class="text-center sm:text-left">

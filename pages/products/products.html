@@ -111,7 +111,7 @@
                     </div>
 
                     <template x-if="products.length === 0">
-                        <div class="text-center py-16 bg-[#FFF9FA] rounded-3xl border border-primary/5">
+                        <div class="text-center py-16 lg:py-24 bg-[#FFF9FA] rounded-3xl border border-primary/5">
                             <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -126,7 +126,7 @@
                     </template>
 
                     <!-- Skeleton Loader -->
-                    <div x-show="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" x-cloak>
+                    <div x-show="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8" x-cloak>
                         <template x-for="i in 6" :key="i">
                             <div class="bg-white rounded-3xl overflow-hidden shadow-sm animate-pulse">
                                 <div class="pt-[100%] bg-gray-200"></div>
@@ -151,7 +151,7 @@
                         </template>
                     </div>
 
-                    <div x-show="!isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div x-show="!isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                         <template x-for="product in products" :key="product.id">
                             <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(245,128,157,0.12)] hover:-translate-y-1.5 transform transition-all duration-500 flex flex-col h-full group">
                                 <div class="relative pt-[100%] overflow-hidden bg-gray-100">
