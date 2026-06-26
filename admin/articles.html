@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Kelola artikel dan tips skincare di DamaraSkin.">
     <title>Kelola Artikel - DamaraSkin Admin</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script type="module" src="/src/js/app.js"></script>
     <link rel="stylesheet" href="/src/css/compiled.css">
 </head>
@@ -79,7 +80,7 @@
                                         <template x-for="article in articles" :key="article.id">
                                             <tr class="hover:bg-gray-50/60 transition duration-150">
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <div class="h-10 w-16 rounded-lg overflow-hidden border border-gray-150 bg-gray-50 shadow-sm">
+                                                    <div class="h-10 w-16 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 shadow-sm">
                                                         <img :src="article.jetpack_featured_media_url" class="h-full w-full object-cover">
                                                     </div>
                                                 </td>

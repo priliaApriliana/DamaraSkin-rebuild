@@ -25,10 +25,10 @@ const navbarHTML = `
                     <a href="/index.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
                         Home
                     </a>
-                    <a href="/pages/products/products.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-550 hover:text-primary hover:border-primary-light">
+                    <a href="/pages/products/products.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
                         Katalog Produk
                     </a>
-                    <a href="/pages/articles/articles.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-550 hover:text-primary hover:border-primary-light">
+                    <a href="/pages/articles/articles.html" class="nav-link-item inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium transition duration-300 text-gray-500 hover:text-primary hover:border-primary-light">
                         Tips & Artikel
                     </a>
                     <template x-if="currentUser && currentUser.role === 'user'">
@@ -56,13 +56,13 @@ const navbarHTML = `
                     <div class="flex items-center space-x-4">
                         <!-- Cart Icon for Regular Users -->
                         <template x-if="currentUser.role === 'user'">
-                            <a href="/pages/cart/cart.html" class="relative p-2 text-gray-500 hover:text-primary hover:bg-primary/5 rounded-full transition duration-300">
+                            <a href="/pages/cart/cart.html" class="relative p-2 text-gray-500 hover:text-primary hover:bg-primary/5 rounded-full transition duration-300" aria-label="Keranjang Belanja">
                                 <span class="sr-only">Keranjang</span>
                                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                                 </svg>
                                 <template x-if="cartCount > 0">
-                                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-primary rounded-full animate-pulse" x-text="cartCount">
+                                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-primary rounded-full cart-badge" x-text="cartCount">
                                     </span>
                                 </template>
                             </a>
@@ -70,7 +70,7 @@ const navbarHTML = `
 
                         <!-- User Profile Dropdown -->
                         <div class="relative">
-                            <button @click="open = !open" @click.away="open = false" class="flex items-center text-sm font-medium text-gray-550 hover:text-primary focus:outline-none transition duration-300 space-x-2">
+                            <button @click="open = !open" @click.away="open = false" class="flex items-center text-sm font-medium text-gray-500 hover:text-primary focus:outline-none transition duration-300 space-x-2" aria-label="Menu Profil">
                                 <span x-text="currentUser.name"></span>
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -107,7 +107,7 @@ const navbarHTML = `
 
             <!-- Hamburger (Mobile) -->
             <div class="-mr-2 flex items-center sm:hidden" x-data="{ mobileOpen: false }">
-                <button @click="mobileOpen = !mobileOpen" class="inline-flex items-center justify-center p-2 rounded-xl text-gray-400 hover:text-primary hover:bg-primary/5 focus:outline-none transition duration-300">
+                <button @click="mobileOpen = !mobileOpen" class="inline-flex items-center justify-center p-2 rounded-xl text-gray-400 hover:text-primary hover:bg-primary/5 focus:outline-none transition duration-300" aria-label="Toggle Menu Navigasi">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': mobileOpen, 'inline-flex': !mobileOpen }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': !mobileOpen, 'inline-flex': mobileOpen }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -172,10 +172,10 @@ const footerHTML = `
                     DamaraSkin adalah platform konsultasi kulit pintar dan rekomendasi produk kecantikan yang dirancang khusus untuk memenuhi kebutuhan kulit unik Anda. Cantik alami dimulai dari perawatan yang tepat.
                 </p>
                 <div class="mt-6 flex space-x-4">
-                    <a href="#" class="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-full transition duration-300">
+                    <a href="#" class="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-full transition duration-300" aria-label="Facebook DamaraSkin">
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
                     </a>
-                    <a href="#" class="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-full transition duration-300">
+                    <a href="#" class="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-full transition duration-300" aria-label="Instagram DamaraSkin">
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
                     </a>
                 </div>
@@ -247,7 +247,7 @@ const adminSidebarHTML = `
              
             <!-- Close Button -->
             <div class="absolute top-0 right-0 -mr-12 pt-2">
-                <button @click="sidebarOpen = false" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white">
+                <button @click="sidebarOpen = false" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white" aria-label="Tutup Sidebar">
                     <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -393,6 +393,17 @@ if (navbarContainer) {
 const footerContainer = document.getElementById("footer-container");
 if (footerContainer) {
   footerContainer.innerHTML = footerHTML;
+
+  // Inject Back to Top button
+  const bttBtn = document.createElement('button');
+  bttBtn.className = 'back-to-top';
+  bttBtn.setAttribute('aria-label', 'Kembali ke atas');
+  bttBtn.innerHTML = '<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>';
+  bttBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  document.body.appendChild(bttBtn);
+  window.addEventListener('scroll', () => {
+    bttBtn.classList.toggle('visible', window.scrollY > 400);
+  });
 }
 
 const adminSidebarContainer = document.getElementById("admin-sidebar-container");
@@ -440,7 +451,7 @@ if (pathname.startsWith("/admin/")) {
 }
 
 // Route Protection (Route Guards)
-const guestOnlyPages = ["/login", "/register", "/pages/auth/login.html", "/pages/auth/register.html"];
+const guestOnlyPages = ["/login", "/register", "/pages/auth/login.html", "/pages/auth/register.html", "/pages/auth/forgot-password.html"];
 const adminPages = [
   "/admin/dashboard", "/admin/products", "/admin/product-create", "/admin/product-edit", "/admin/orders", "/admin/order-detail", "/admin/users", "/admin/dashboard.html", "/admin/products.html", "/admin/product-create.html", "/admin/product-edit.html", "/admin/orders.html", "/admin/order-detail.html", "/admin/users.html",
   "/admin/articles", "/admin/article-create", "/admin/article-edit", "/admin/articles.html", "/admin/article-create.html", "/admin/article-edit.html", "/admin/profile", "/admin/profile.html"
@@ -487,7 +498,7 @@ Alpine.data('navbarComponent', () => ({
       document.querySelectorAll(".nav-link-item").forEach(link => {
         const href = link.getAttribute("href");
         if (href === pathname || (href !== "/" && pathname.startsWith(href))) {
-          link.classList.remove("border-transparent", "text-gray-500", "text-gray-550");
+          link.classList.remove("border-transparent", "text-gray-500");
           link.classList.add("border-primary", "text-dark-text");
         } else {
           link.classList.add("border-transparent");
@@ -528,5 +539,31 @@ window.renderStars = function(rating) {
 window.formatPrice = function(price) {
   return "Rp " + new Intl.NumberFormat("id-ID").format(price);
 };
+
+// Global status translation helper (EN → ID)
+window.translateStatus = function(status) {
+  const map = {
+    'pending': 'Menunggu',
+    'confirmed': 'Dikonfirmasi',
+    'processing': 'Diproses',
+    'shipped': 'Dikirim',
+    'delivered': 'Selesai',
+    'cancelled': 'Dibatalkan',
+    'paid': 'Lunas',
+    'unpaid': 'Belum Bayar'
+  };
+  return map[status] || (status.charAt(0).toUpperCase() + status.slice(1));
+};
+
+// Cart badge temporary pulse animation
+window.addEventListener('cart-updated', () => {
+  setTimeout(() => {
+    const badge = document.querySelector('.cart-badge');
+    if (badge) {
+      badge.classList.add('animate-pulse');
+      setTimeout(() => badge.classList.remove('animate-pulse'), 2000);
+    }
+  }, 50);
+});
 
 Alpine.start();

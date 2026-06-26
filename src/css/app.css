@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 @theme {
   --color-primary: #c1768a;
@@ -8,6 +7,7 @@
   --color-accent: #b08968;
   --color-bg-cream: #fdf6f0;
   --color-border-custom: #e8d5d5;
+  --color-dark-text: #333333;
   --font-heading: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Poppins', sans-serif;
   --font-brush: 'Alex Brush', cursive;
@@ -17,18 +17,18 @@
   display: none !important;
 }
 
-/* Base Headings Style */
-h1, h2, h3, .font-playfair, .font-cormorant {
-  font-family: 'Cormorant Garamond', Georgia, serif !important;
+/* Base Headings Style — using theme variables, no !important */
+h1, h2, h3, .font-heading, .font-cormorant {
+  font-family: var(--font-heading);
 }
 
 body, p, span, a, button, input, label, select, textarea {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-body);
 }
 
-/* Button primary & secondary consistency overrides */
+/* Button primary & secondary using CSS variables for SSoT */
 .btn-primary {
-  background-color: #c1768a;
+  background-color: var(--color-primary);
   color: #ffffff;
   border-radius: 8px;
   padding: 10px 20px;
@@ -37,14 +37,14 @@ body, p, span, a, button, input, label, select, textarea {
   transition: all 0.3s ease;
 }
 .btn-primary:hover {
-  background-color: #a05970;
+  background-color: var(--color-primary-dark);
   box-shadow: 0 4px 14px rgba(193, 118, 138, 0.3);
 }
 
 .btn-secondary {
   background-color: transparent;
-  color: #c1768a;
-  border: 2px solid #c1768a;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
   border-radius: 8px;
   padding: 10px 20px;
   font-weight: 600;
@@ -81,4 +81,46 @@ body, p, span, a, button, input, label, select, textarea {
   .grid-4 {
     grid-template-columns: repeat(4, 1fr) !important;
   }
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(193, 118, 138, 0.3);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  pointer-events: none;
+}
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Delete confirmation modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

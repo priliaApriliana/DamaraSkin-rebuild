@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Daftar akun DamaraSkin untuk mendapatkan konsultasi kulit pintar dan rekomendasi produk skincare terbaik.">
     <title>Daftar Akun - DamaraSkin</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script type="module" src="/src/js/app.js"></script>
     <link rel="stylesheet" href="/src/css/compiled.css">
 </head>
@@ -29,7 +30,7 @@
                 </div>
                 
                 <div class="my-auto py-8">
-                    <h2 class="text-3xl font-bold font-poppins leading-snug mb-4 text-white drop-shadow-sm">
+                    <h2 class="text-3xl font-bold font-sans leading-snug mb-4 text-white drop-shadow-sm">
                         Kulit Sehat & Glowing Dimulai dari Analisis Pintar.
                     </h2>
                     <p class="text-white/80 text-sm leading-relaxed">
@@ -78,12 +79,12 @@
                 <!-- Auth Card Container -->
                 <div class="bg-white/60 backdrop-blur-xl border border-white/80 shadow-2xl rounded-3xl p-8 sm:p-10">
                     <div class="mb-8 text-center lg:text-left">
-                        <h1 class="text-2xl font-bold text-gray-800 font-poppins">Mulai Perjalanan Kulit Sehat</h1>
+                        <h1 class="text-2xl font-bold text-gray-800 font-sans">Mulai Perjalanan Kulit Sehat</h1>
                         <p class="text-sm text-gray-500 mt-1">Daftar sekarang untuk memulai analisa kulit pintar Anda.</p>
                     </div>
 
                     <!-- Error Alert -->
-                    <div x-show="errorMsg" x-transition class="bg-red-50 border border-red-200 text-red-755 px-4 py-3 rounded-2xl text-xs font-semibold mb-5" x-text="errorMsg" x-cloak></div>
+                    <div x-show="errorMsg" x-transition class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl text-xs font-semibold mb-5" x-text="errorMsg" x-cloak></div>
 
                     <form @submit.prevent="submit()" class="space-y-4">
                         <!-- Name -->

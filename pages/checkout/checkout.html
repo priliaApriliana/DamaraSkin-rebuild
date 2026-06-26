@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Halaman checkout DamaraSkin. Lengkapi data pengiriman dan pilih metode pembayaran untuk pesanan Anda.">
     <title>Checkout - DamaraSkin</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script type="module" src="/src/js/app.js"></script>
     <link rel="stylesheet" href="/src/css/compiled.css">
 </head>
@@ -27,7 +28,7 @@
     <main class="py-12 bg-white" x-data="checkoutPage()">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <div x-show="alertError" class="bg-red-50 border border-red-200 text-red-755 px-4 py-3 rounded-2xl mb-8 flex justify-between items-center" x-cloak>
+            <div x-show="alertError" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl mb-8 flex justify-between items-center" x-cloak>
                 <span class="text-sm font-medium" x-text="alertError"></span>
                 <button @click="alertError = ''" class="text-red-500 hover:text-red-700">
                     <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
@@ -51,7 +52,8 @@
                                 </div>
                                 <div>
                                     <label for="recipient_phone" class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nomor Telepon Penerima</label>
-                                    <input type="text" x-model="recipientPhone" id="recipient_phone" required class="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Contoh: 08123456789">
+                                    <input type="tel" x-model="recipientPhone" id="recipient_phone" required class="block w-full px-4 py-2.5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-2xl text-sm text-gray-700 transition" placeholder="Contoh: 08123456789" pattern="[0-9]{10,15}" @input="recipientPhone = recipientPhone.replace(/[^0-9]/g, '')">
+                                    <p x-show="recipientPhone && recipientPhone.length < 10" class="text-xs text-red-500 mt-1 font-medium" x-cloak>Nomor telepon minimal 10 digit.</p>
                                 </div>
                             </div>
 
@@ -113,19 +115,19 @@
                                 </template>
                             </div>
 
-                            <hr class="border-gray-250 mb-6">
+                            <hr class="border-gray-200 mb-6">
 
                             <!-- Pricing Summary -->
                             <div class="space-y-4 mb-8">
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-505 font-medium">Subtotal</span>
+                                    <span class="text-gray-500 font-medium">Subtotal</span>
                                     <span class="font-bold text-gray-800" x-text="formatPrice(subtotal)"></span>
                                 </div>
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-505 font-medium">Biaya Pengiriman</span>
+                                    <span class="text-gray-500 font-medium">Biaya Pengiriman</span>
                                     <span class="font-bold text-gray-800" x-text="formatPrice(shippingCost)"></span>
                                 </div>
-                                <hr class="border-gray-250">
+                                <hr class="border-gray-200">
                                 <div class="flex justify-between text-base font-bold">
                                     <span class="text-gray-800">Total Harga</span>
                                     <span class="text-primary text-lg font-extrabold" x-text="formatPrice(total)"></span>
@@ -188,6 +190,17 @@
                 },
                 submitCheckout() {
                     this.alertError = '';
+
+                    // Phone validation
+                    if (!this.recipientPhone || this.recipientPhone.length < 10) {
+                        this.alertError = 'Nomor telepon penerima harus minimal 10 digit angka.';
+                        return;
+                    }
+                    if (!/^[0-9]+$/.test(this.recipientPhone)) {
+                        this.alertError = 'Nomor telepon hanya boleh berisi angka.';
+                        return;
+                    }
+
                     const res = window.db.checkout(
                         this.recipientName,
                         this.recipientPhone,

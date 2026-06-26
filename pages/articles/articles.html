@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Tips dan edukasi skincare terbaru dari DamaraSkin. Pelajari perawatan kulit wajah yang tepat dan efektif.">
     <title>Tips & Edukasi Skincare - DamaraSkin</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script type="module" src="/src/js/app.js"></script>
     <link rel="stylesheet" href="/src/css/compiled.css">
 </head>
@@ -36,7 +37,7 @@
             <h1 class="text-3xl sm:text-4xl font-normal text-gray-900 tracking-tight leading-none">
                 Tips &amp; <span class="italic text-primary font-medium">Edukasi Skincare</span>
             </h1>
-            <p class="text-sm text-gray-505 mt-2">Ketahui jenis kulit Anda secara ilmiah, baca riset bahan aktif skincare, dan pelajari cara terbaik mendapatkan kulit impian Anda.</p>
+            <p class="text-sm text-gray-500 mt-2">Ketahui jenis kulit Anda secara ilmiah, baca riset bahan aktif skincare, dan pelajari cara terbaik mendapatkan kulit impian Anda.</p>
         </div>
     </div>
 
@@ -85,9 +86,9 @@
 
                                 <h3 class="text-gray-800 font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-200 leading-snug" x-html="article.title.rendered"></h3>
 
-                                <p class="text-xs text-gray-555 line-clamp-3 mb-5 leading-relaxed flex-grow" x-text="article.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...'"></p>
+                                <p class="text-xs text-gray-500 line-clamp-3 mb-5 leading-relaxed flex-grow" x-text="article.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...'"></p>
 
-                                <div class="mt-auto pt-3 border-t border-gray-55 flex justify-end">
+                                <div class="mt-auto pt-3 border-t border-gray-100 flex justify-end">
                                     <a :href="'/pages/articles/article-detail.html?slug=' + article.slug" class="inline-flex items-center text-xs font-semibold text-primary group-hover:text-accent transition duration-200">
                                         <span>Baca Selengkapnya</span>
                                         <svg class="h-3.5 w-3.5 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>

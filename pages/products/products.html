@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Katalog produk skincare terlengkap di DamaraSkin. Temukan cleanser, toner, serum, moisturizer, dan sunscreen untuk kulit Anda.">
     <title>Katalog Produk Skincare - DamaraSkin</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script type="module" src="/src/js/app.js"></script>
     <link rel="stylesheet" href="/src/css/compiled.css">
 </head>
@@ -27,7 +28,7 @@
                     <li aria-current="page">
                         <div class="flex items-center">
                             <svg class="w-3 h-3 text-gray-300 mx-1" aria-hidden="true" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/></svg>
-                            <span class="ml-1 text-gray-505 font-semibold">Katalog Produk</span>
+                            <span class="ml-1 text-gray-500 font-semibold">Katalog Produk</span>
                         </div>
                     </li>
                 </ol>
@@ -36,7 +37,7 @@
             <h1 class="text-3xl sm:text-4xl font-normal text-gray-900 tracking-tight leading-none">
                 Katalog <span class="italic text-primary font-medium">Skincare</span>
             </h1>
-            <p class="text-sm text-gray-505 mt-2">Temukan kurasi skincare terbaik pilihan kami, diformulasikan untuk kecantikan dan kesehatan kulit alami Anda.</p>
+            <p class="text-sm text-gray-500 mt-2">Temukan kurasi skincare terbaik pilihan kami, diformulasikan untuk kecantikan dan kesehatan kulit alami Anda.</p>
         </div>
     </div>
 
@@ -117,14 +118,40 @@
                             <h3 class="text-lg font-bold text-gray-800">Produk Tidak Ditemukan</h3>
                             <p class="text-sm text-gray-500 mt-2">Coba atur ulang kata kunci pencarian atau filter kategori Anda.</p>
                             <div class="mt-6">
-                                <button @click="resetFilters()" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary hover:bg-accent text-white font-semibold rounded-full text-xs transition duration-300 shadow-md shadow-primary/10">
+                                <button @click="resetFilters()" class="inline-flex items-center justify-center px-6 py-2.5 bg-primary hover:bg-accent text-white font-semibold rounded-2xl text-xs transition duration-300 shadow-md shadow-primary/10">
                                     Tampilkan Semua Produk
                                 </button>
                             </div>
                         </div>
                     </template>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Skeleton Loader -->
+                    <div x-show="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" x-cloak>
+                        <template x-for="i in 6" :key="i">
+                            <div class="bg-white rounded-3xl overflow-hidden shadow-sm animate-pulse">
+                                <div class="pt-[100%] bg-gray-200"></div>
+                                <div class="p-5 space-y-3">
+                                    <div class="flex space-x-1">
+                                        <div class="h-4 w-4 bg-gray-200 rounded"></div>
+                                        <div class="h-4 w-4 bg-gray-200 rounded"></div>
+                                        <div class="h-4 w-4 bg-gray-200 rounded"></div>
+                                        <div class="h-4 w-4 bg-gray-200 rounded"></div>
+                                        <div class="h-4 w-4 bg-gray-200 rounded"></div>
+                                    </div>
+                                    <div class="h-5 bg-gray-200 rounded w-3/4"></div>
+                                    <div class="h-3 bg-gray-100 rounded w-1/2"></div>
+                                    <div class="h-3 bg-gray-100 rounded w-full"></div>
+                                    <div class="h-3 bg-gray-100 rounded w-2/3"></div>
+                                    <div class="pt-3 border-t border-gray-50 flex justify-between items-center">
+                                        <div class="h-5 bg-gray-200 rounded w-24"></div>
+                                        <div class="h-8 bg-gray-200 rounded-full w-24"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div x-show="!isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         <template x-for="product in products" :key="product.id">
                             <div class="bg-white rounded-3xl overflow-hidden shadow-[0_10px_35px_-10px_rgba(245,128,157,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(245,128,157,0.12)] hover:-translate-y-1.5 transform transition-all duration-500 flex flex-col h-full group">
                                 <div class="relative pt-[100%] overflow-hidden bg-gray-100">
@@ -143,7 +170,7 @@
                                     <p class="text-xs text-gray-500 line-clamp-2 mb-4 leading-relaxed flex-grow" x-text="product.description"></p>
                                     <div class="mt-auto pt-3 border-t border-gray-50 flex items-center justify-between">
                                         <span class="text-primary font-bold text-base" x-text="formatPrice(product.price)"></span>
-                                        <a :href="'/pages/products/product-detail.html?slug=' + product.slug" class="inline-flex items-center justify-center px-4 py-1.5 text-xs font-semibold text-white bg-primary hover:bg-accent rounded-full transition-colors duration-300 shadow-md shadow-primary/10">Lihat Detail</a>
+                                        <a :href="'/pages/products/product-detail.html?slug=' + product.slug" class="inline-flex items-center justify-center px-4 py-1.5 text-xs font-semibold text-white bg-primary hover:bg-accent rounded-2xl transition-colors duration-300 shadow-md shadow-primary/10">Lihat Detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -163,6 +190,7 @@
             return {
                 allProducts: [],
                 products: [],
+                isLoading: true,
                 categories: [],
                 skinTypes: ['all', 'normal', 'oily', 'dry', 'combination', 'sensitive'],
                 concerns: ['all', 'acne', 'brightening', 'anti_aging', 'hydrating', 'pore'],
@@ -182,6 +210,8 @@
                     if (params.has('search')) this.search = params.get('search');
                     
                     this.filterProducts();
+                    // Brief delay for skeleton loader visibility
+                    setTimeout(() => { this.isLoading = false; }, 300);
                 },
                 filterProducts() {
                     let filtered = this.allProducts;

@@ -24,6 +24,7 @@ export default defineConfig({
                 profile: resolve(__dirname, 'pages/profile/profile.html'),
                 login: resolve(__dirname, 'pages/auth/login.html'),
                 register: resolve(__dirname, 'pages/auth/register.html'),
+                'forgot-password': resolve(__dirname, 'pages/auth/forgot-password.html'),
                 'admin-dashboard': resolve(__dirname, 'admin/dashboard.html'),
                 'admin-products': resolve(__dirname, 'admin/products.html'),
                 'admin-product-create': resolve(__dirname, 'admin/product-create.html'),

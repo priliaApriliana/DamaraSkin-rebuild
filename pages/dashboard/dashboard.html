@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Dashboard konsultasi kulit DamaraSkin. Analisis tipe kulit, dapatkan rekomendasi produk, dan tips perawatan kulit.">
     <title>Skin Profile & Recommendations - DamaraSkin</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script type="module" src="/src/js/app.js"></script>
     <link rel="stylesheet" href="/src/css/compiled.css">
 </head>
@@ -56,7 +57,7 @@
                         </div>
 
                         <div class="flex-shrink-0">
-                            <button @click="resetForm()" class="inline-flex items-center justify-center px-6 py-3 border border-primary/20 text-sm font-semibold rounded-full text-primary bg-white hover:bg-primary/5 hover:scale-105 transform transition duration-300">
+                            <button @click="resetForm()" class="inline-flex items-center justify-center px-6 py-3 border border-primary/20 text-sm font-semibold rounded-2xl text-primary bg-white hover:bg-primary/5 hover:scale-105 transform transition duration-300">
                                 <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89H17.51"/></svg>
                                 Ulangi Analisis Kulit
                             </button>
@@ -300,7 +301,7 @@
 
                         <!-- Submit Button -->
                         <div class="pt-6 flex justify-center">
-                            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 border border-transparent text-base font-semibold rounded-full text-white bg-primary hover:bg-accent transition duration-300 shadow-lg shadow-primary/20 hover:scale-105 transform cursor-pointer">
+                            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center px-10 py-4 border border-transparent text-base font-semibold rounded-2xl text-white bg-primary hover:bg-accent transition duration-300 shadow-lg shadow-primary/20 hover:scale-105 transform cursor-pointer">
                                 Analisis Kulit & Tampilkan Rekomendasi
                                 <svg class="ml-2 -mr-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                             </button>
@@ -359,7 +360,7 @@
                 <span class="inline-flex items-center px-3.5 py-1 rounded-full text-[10px] font-bold bg-white text-primary border border-primary/10 shadow-sm uppercase tracking-wider mb-4">
                     💡 Skincare Tip of the Day
                 </span>
-                <blockquote class="text-xl sm:text-3xl font-medium text-gray-850 italic leading-relaxed max-w-3xl mx-auto font-heading text-primary-dark" x-text="'&ldquo;' + tip + '&rdquo;'">
+                <blockquote class="text-xl sm:text-3xl font-medium text-gray-800 italic leading-relaxed max-w-3xl mx-auto font-heading text-primary-dark" x-text="'&ldquo;' + tip + '&rdquo;'">
                 </blockquote>
             </div>
         </div>

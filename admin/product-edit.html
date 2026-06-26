@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Edit detail produk skincare di katalog DamaraSkin.">
     <title>Ubah Produk - DamaraSkin Admin</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script type="module" src="/src/js/app.js"></script>
     <link rel="stylesheet" href="/src/css/compiled.css">
 </head>
@@ -32,7 +33,7 @@
 
             <main class="flex-grow py-6 px-4 sm:px-6 lg:px-8" x-data="editProductPage()">
                 <div class="max-w-7xl mx-auto">
-                    <div class="mb-8 flex justify-between items-center border-b border-gray-150 pb-5">
+                    <div class="mb-8 flex justify-between items-center border-b border-gray-100 pb-5">
                         <div>
                             <h1 class="text-2xl font-bold text-gray-800">Ubah Produk</h1>
                             <p class="text-xs text-gray-500 mt-1" x-text="'Edit detail untuk ' + name"></p>
@@ -101,7 +102,7 @@
                                         <template x-for="opt in [['acne', 'Jerawat'], ['brightening', 'Kusam'], ['anti_aging', 'Penuaan'], ['hydrating', 'Kering'], ['pore', 'Pori-Pori']]" :key="opt[0]">
                                             <label class="inline-flex items-center cursor-pointer">
                                                 <input type="checkbox" :value="opt[0]" x-model="concern" class="rounded border-gray-300 text-primary focus:ring-primary">
-                                                <span class="ml-2 text-sm text-gray-650" x-text="opt[1]"></span>
+                                                <span class="ml-2 text-sm text-gray-600" x-text="opt[1]"></span>
                                             </label>
                                         </template>
                                     </div>
@@ -115,7 +116,7 @@
 
                                 <!-- Submit Button -->
                                 <div class="pt-4 flex justify-end space-x-3">
-                                    <a href="/admin/products.html" class="px-6 py-3 border border-gray-200 text-xs font-bold rounded-xl text-gray-500 hover:bg-gray-55 transition">Batal</a>
+                                    <a href="/admin/products.html" class="px-6 py-3 border border-gray-200 text-xs font-bold rounded-xl text-gray-500 hover:bg-gray-50 transition">Batal</a>
                                     <button type="submit" class="px-6 py-3 bg-primary hover:bg-accent text-white text-xs font-bold rounded-xl transition shadow-md shadow-primary/15">Simpan Perubahan</button>
                                 </div>
                             </form>

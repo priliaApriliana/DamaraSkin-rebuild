@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Detail pesanan pelanggan DamaraSkin. Kelola status dan informasi pengiriman.">
     <title>Detail Pesanan - DamaraSkin Admin</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script type="module" src="/src/js/app.js"></script>
     <link rel="stylesheet" href="/src/css/compiled.css">
 </head>
@@ -35,7 +36,7 @@
                     
                     <template x-if="order">
                         <div>
-                            <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-gray-150 pb-5">
+                            <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-gray-100 pb-5">
                                 <div>
                                     <h1 class="text-2xl font-bold text-gray-800" x-text="'Pesanan #' + order.order_number"></h1>
                                     <p class="text-xs text-gray-500 mt-1" x-text="'Dipesan pada ' + new Date(order.created_at).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})"></p>
@@ -51,7 +52,7 @@
                                         <div class="space-y-5">
                                             <template x-for="item in orderItems" :key="item.id">
                                                 <div class="flex items-center justify-between pb-4 border-b border-gray-100 last:border-0 last:pb-0 gap-4">
-                                                    <div class="h-12 w-12 rounded-lg overflow-hidden border border-gray-150 bg-gray-50 flex-shrink-0 shadow-sm">
+                                                    <div class="h-12 w-12 rounded-lg overflow-hidden border border-gray-100 bg-gray-50 flex-shrink-0 shadow-sm">
                                                         <img :src="item.product.images[0]" class="h-full w-full object-cover">
                                                     </div>
                                                     <div class="flex-grow">
@@ -84,7 +85,7 @@
                                             <template x-if="order.notes">
                                                 <div class="sm:col-span-2">
                                                     <span class="text-xs font-bold text-gray-400 block uppercase tracking-wider mb-1">Catatan Kurir</span>
-                                                    <span class="font-medium text-gray-750 italic block" x-text="'&ldquo;' + order.notes + '&rdquo;'"></span>
+                                                    <span class="font-medium text-gray-700 italic block" x-text="'&ldquo;' + order.notes + '&rdquo;'"></span>
                                                 </div>
                                             </template>
                                         </div>
@@ -111,7 +112,7 @@
 
                                             <div>
                                                 <span class="text-xs font-bold text-gray-400 block uppercase tracking-wider mb-1">Pembayaran</span>
-                                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold border" :class="order.payment_status === 'paid' ? 'bg-green-500/10 text-green-700 border-green-500/20' : 'bg-yellow-500/10 text-yellow-750 border-yellow-500/20'" x-text="order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1)"></span>
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold border" :class="order.payment_status === 'paid' ? 'bg-green-500/10 text-green-700 border-green-500/20' : 'bg-yellow-500/10 text-yellow-700 border-yellow-500/20'" x-text="translateStatus(order.payment_status)"></span>
                                             </div>
 
                                             <template x-if="order.tracking_number">
