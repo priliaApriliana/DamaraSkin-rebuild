@@ -507,6 +507,19 @@ Alpine.data('navbarComponent', () => ({
           link.classList.add("border-transparent", "text-gray-400");
         }
       });
+
+      // Highlight Cart Link Icon if active
+      const cartLink = document.querySelector('a[href="/pages/cart/cart.html"]');
+      if (cartLink) {
+        const isCartActive = pathname.includes("/pages/cart/cart.html") || pathname.endsWith("/pages/cart/cart") || pathname.includes("/pages/checkout/checkout.html") || pathname.endsWith("/pages/checkout/checkout");
+        if (isCartActive) {
+          cartLink.classList.remove("text-gray-400", "text-gray-500");
+          cartLink.classList.add("text-primary");
+        } else {
+          cartLink.classList.remove("text-primary");
+          cartLink.classList.add("text-gray-500");
+        }
+      }
     });
   },
   logout() {
